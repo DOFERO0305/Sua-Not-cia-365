@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sua Notícia 365 | Moçambique Atualizado</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Sua Notícia 365 | Moçambique</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #0284c7; /* Azul Premium para Notícias */
+            --primary: #0284c7; 
             --bg: #fdfdfc;
             --card: #ffffff;
             --text: #111827;
@@ -19,71 +19,107 @@
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         }
         @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #0f172a;
-                --card: #1e293b;
-                --text: #f3f4f6;
-                --text-meta: #9ca3af;
-                --border: #334155;
-            }
+            :root { --bg: #0f172a; --card: #1e293b; --text: #f3f4f6; --text-meta: #9ca3af; --border: #334155; }
         }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); padding-bottom: 40px; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); top: 0 !important; }
         
-        .navbar { position: sticky; top: 0; background: rgba(var(--bg), 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 1000; padding: 14px 20px; border-bottom: 1px solid var(--border); }
+        /* Navegação */
+        .navbar { position: sticky; top: 0; background: rgba(var(--bg), 0.95); backdrop-filter: blur(15px); z-index: 1000; padding: 14px 20px; border-bottom: 1px solid var(--border); }
         .nav-top { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
-        .logo { font-weight: 800; font-size: 1.6rem; color: var(--text); text-decoration: none; letter-spacing: -1.5px; display: flex; align-items: center; gap: 8px; }
+        .logo { font-weight: 800; font-size: 1.6rem; color: var(--text); text-decoration: none; letter-spacing: -1.5px; display: flex; align-items: center; gap: 8px; cursor: pointer; }
         .logo span { color: var(--primary); }
-        
-        .btn-saved { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 8px 16px; border-radius: var(--radius-md); font-weight: 600; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
+        .btn-saved { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 8px 16px; border-radius: var(--radius-md); font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: 0.2s; }
         .btn-saved.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-        .search-bar { margin: 16px auto; max-width: 800px; position: relative; }
-        .search-bar input { width: 100%; padding: 14px 18px 14px 48px; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--card); color: var(--text); font-family: inherit; box-shadow: var(--shadow-sm); }
-        .search-bar i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-meta); }
-
-        .categories { display: flex; gap: 10px; overflow-x: auto; padding: 10px 0; scrollbar-width: none; max-width: 1200px; margin: 0 auto; }
+        /* Vista Inicial (Feed) */
+        #home-view { display: block; }
+        .search-bar { margin: 16px auto; max-width: 800px; position: relative; padding: 0 20px; }
+        .search-bar input { width: 100%; padding: 14px 18px 14px 48px; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--card); color: var(--text); font-family: inherit; }
+        .search-bar i { position: absolute; left: 38px; top: 50%; transform: translateY(-50%); color: var(--text-meta); }
+        .categories { display: flex; gap: 10px; overflow-x: auto; padding: 10px 20px; scrollbar-width: none; max-width: 1200px; margin: 0 auto; }
         .categories::-webkit-scrollbar { display: none; }
-        .cat-item { padding: 10px 20px; background: var(--card); border: 1px solid var(--border); border-radius: 100px; font-size: 0.85rem; font-weight: 700; color: var(--text); white-space: nowrap; cursor: pointer; transition: 0.2s; }
+        .cat-item { padding: 8px 18px; background: var(--card); border: 1px solid var(--border); border-radius: 100px; font-size: 0.85rem; font-weight: 700; white-space: nowrap; cursor: pointer; transition: 0.2s; }
         .cat-item.active { background: var(--text); color: var(--bg); border-color: var(--text); }
-
-        .feed { padding: 20px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
-        .news-card { display: flex; flex-direction: column; background: var(--card); border-radius: var(--radius-lg); border: 1px solid var(--border); text-decoration: none; color: inherit; overflow: hidden; transition: 0.3s; box-shadow: var(--shadow-sm); }
+        .feed { padding: 20px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; min-height: 50vh; }
+        .news-card { background: var(--card); border-radius: var(--radius-lg); border: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; cursor: pointer; transition: 0.3s; }
         .news-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
-        .news-img { width: 100%; height: 200px; object-fit: cover; background: #eee; }
-        .news-body { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+        .news-img { width: 100%; height: 200px; object-fit: cover; background: var(--border); }
+        .news-body { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
         .news-tag { font-size: 0.75rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 10px; }
-        .news-title { font-size: 1.1rem; font-weight: 700; line-height: 1.4; margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-        .news-meta { font-size: 0.8rem; color: var(--text-meta); margin-top: auto; }
+        .news-title { font-size: 1.1rem; font-weight: 700; line-height: 1.4; margin-bottom: 15px; }
 
-        .loader { text-align: center; padding: 50px; grid-column: 1/-1; color: var(--primary); font-size: 1.8rem; }
+        /* Vista de Leitura do Artigo */
+        #article-view { display: none; max-width: 800px; margin: 0 auto; padding: 20px; padding-bottom: 60px; }
+        .back-btn { background: none; border: none; font-size: 1.1rem; font-weight: 700; color: var(--text); cursor: pointer; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; font-family: inherit; }
+        .article-source { color: var(--primary); font-weight: 800; font-size: 0.85rem; text-transform: uppercase; margin-bottom: 10px; display: inline-block; background: rgba(2, 132, 199, 0.1); padding: 5px 12px; border-radius: 6px; }
+        .article-title { font-size: 2.2rem; font-weight: 800; line-height: 1.2; margin-bottom: 20px; letter-spacing: -1px; }
+        .article-main-img { width: 100%; border-radius: var(--radius-lg); margin-bottom: 30px; object-fit: cover; }
+        .article-content { font-family: 'Lora', serif; font-size: 1.25rem; line-height: 1.8; color: var(--text); }
+        .article-content img { max-width: 100%; height: auto; border-radius: var(--radius-md); margin: 20px 0; }
+        .article-content p { margin-bottom: 1.5rem; }
+        .btn-action-row { display: flex; gap: 10px; margin-bottom: 30px; }
+        .btn-action-row button { flex: 1; padding: 12px; border-radius: 100px; border: 1px solid var(--border); background: var(--card); color: var(--text); font-weight: 700; cursor: pointer; font-family: inherit; font-size: 0.9rem; }
+        
+        .loader { text-align: center; padding: 40px; grid-column: 1/-1; color: var(--primary); font-size: 1.8rem; }
+        
+        /* Oculta a barra do Google Translate nativa */
+        .goog-te-banner-frame { display: none !important; }
+        #google_translate_element { text-align: center; margin: 10px 0; }
+        #google_translate_element select { padding: 5px; border-radius: 5px; background: var(--card); color: var(--text); border: 1px solid var(--border); }
     </style>
 </head>
 <body>
 
 <nav class="navbar">
     <div class="nav-top">
-        <a href="index.html" class="logo">Sua Notícia <span>365</span></a>
-        <button id="bookmark-btn" class="btn-saved" onclick="toggleSavedView()"><i class="far fa-bookmark"></i> Salvos</button>
+        <div class="logo" onclick="closeArticle()">Sua Notícia <span>365</span></div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <div id="google_translate_element"></div>
+            <button id="bookmark-btn" class="btn-saved" onclick="toggleSavedView()"><i class="far fa-bookmark"></i> Salvos</button>
+        </div>
     </div>
+</nav>
+
+<div id="home-view">
     <div class="search-bar">
         <i class="fas fa-search"></i>
-        <input type="text" id="search-input" placeholder="Pesquisar em 22 jornais..." onkeyup="if(event.key==='Enter') resetAndLoad()">
+        <input type="text" id="search-input" placeholder="Pesquisar notícias..." onkeyup="if(event.key==='Enter') resetAndLoad()">
     </div>
     <div class="categories">
-        <div class="cat-item active" onclick="filterCat('', this)">Recentíssimas</div>
+        <div class="cat-item active" onclick="filterCat('', this)">Últimas</div>
         <div class="cat-item" onclick="filterCat('política', this)">Política</div>
         <div class="cat-item" onclick="filterCat('economia', this)">Economia</div>
         <div class="cat-item" onclick="filterCat('sociedade', this)">Sociedade</div>
         <div class="cat-item" onclick="filterCat('desporto', this)">Desporto</div>
     </div>
-</nav>
+    <main class="feed" id="feed"></main>
+    <div id="scroll-anchor" class="loader"><i class="fas fa-circle-notch fa-spin"></i> A processar jornais...</div>
+</div>
 
-<main class="feed" id="feed"></main>
-<div id="scroll-anchor" class="loader"><i class="fas fa-circle-notch fa-spin"></i> A processar jornais...</div>
+<div id="article-view">
+    <button class="back-btn" onclick="closeArticle()"><i class="fas fa-arrow-left"></i> Voltar</button>
+    <div id="art-source" class="article-source">Fonte</div>
+    <h1 id="art-title" class="article-title">Título Carregando...</h1>
+    
+    <div class="btn-action-row">
+        <button id="art-save-btn" onclick="toggleSaveCurrent()"><i class="far fa-bookmark"></i> Guardar</button>
+        <button onclick="shareCurrent()"><i class="fas fa-share-alt"></i> Partilhar</button>
+    </div>
+
+    <img id="art-img" class="article-main-img" src="" style="display:none;">
+    <div id="art-content" class="article-content"><i class="fas fa-spinner fa-spin"></i> A carregar conteúdo completo...</div>
+</div>
+
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({pageLanguage: 'pt', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+</script>
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 <script>
-// A nossa lista de experiência com os 22 jornais
+// Mantive a lista completa, os que falharem serão ignorados silenciosamente sem dar erro
 const SOURCES = [
     { name: "O País", api: "https://opais.co.mz/wp-json/wp/v2/posts?_embed", slug: "opais" },
     { name: "Carta de MZ", api: "https://cartamz.com/wp-json/wp/v2/posts?_embed", slug: "carta" },
@@ -111,35 +147,32 @@ const SOURCES = [
 ];
 
 let allPosts = [], currentPage = 1, isFetching = false, currentCat = '', isSavedView = false;
+let currentReadingPost = null; // Guarda a notícia que estamos a ler agora
 
+// Carregar o feed de notícias
 async function loadNews() {
     if (isFetching || isSavedView) return;
     isFetching = true;
     
-    const searchVal = document.getElementById('search-input').value;
-    const query = currentCat || searchVal;
+    const query = currentCat || document.getElementById('search-input').value;
 
-    // Dispara 22 pedidos em simultâneo!
     const fetchPromises = SOURCES.map(async (src) => {
         try {
             let url = `${src.api}&per_page=3&page=${currentPage}`;
             if (query) url += `&search=${encodeURIComponent(query)}`;
             const res = await fetch(url);
-            
-            // Se o site não suportar esta API, vai falhar aqui
-            if (!res.ok) throw new Error('Falha na API'); 
-            
+            if (!res.ok) throw new Error('Falha');
             const data = await res.json();
+            
             return data.map(p => ({
-                id: p.id, title: p.title.rendered, date: p.date, 
-                srcName: src.name, srcSlug: src.slug,
-                img: p._embedded?.['wp:featuredmedia']?.[0]?.source_url || 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?q=80&w=600',
-                link: `artigo.html?id=${p.id}&src=${src.slug}`
+                id: p.id, 
+                title: p.title.rendered, 
+                date: p.date, 
+                srcName: src.name, 
+                srcApi: src.api, // Guardamos a API base para ir buscar o texto completo depois
+                img: p._embedded?.['wp:featuredmedia']?.[0]?.source_url || 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?q=80&w=600'
             }));
-        } catch (e) { 
-            console.log(`Site não respondeu ou não usa WP-JSON: ${src.name}`);
-            return []; // Retorna vazio se der erro, para não quebrar o resto
-        }
+        } catch (e) { return []; }
     });
 
     const results = await Promise.all(fetchPromises);
@@ -150,25 +183,69 @@ async function loadNews() {
     currentPage++;
 }
 
+// Desenhar os cartões
 function renderFeed() {
     const feed = document.getElementById('feed');
     if(currentPage === 1) feed.innerHTML = '';
-    const displayList = isSavedView ? JSON.parse(localStorage.getItem('cld_saved') || '[]') : allPosts;
+    const displayList = isSavedView ? JSON.parse(localStorage.getItem('news_saved') || '[]') : allPosts;
     
     displayList.forEach(p => {
-        const card = document.createElement('a');
+        const card = document.createElement('div');
         card.className = 'news-card';
-        card.href = p.link;
+        // Quando clicas, ele não abre um link novo, mas chama a função openArticle!
+        card.onclick = () => openArticle(p);
+        
         card.innerHTML = `
             <img class="news-img" src="${p.img}" loading="lazy">
             <div class="news-body">
                 <span class="news-tag">${p.srcName}</span>
                 <h3 class="news-title">${p.title}</h3>
-                <div class="news-meta"><span>${new Date(p.date).toLocaleDateString()}</span></div>
             </div>`;
         feed.appendChild(card);
     });
 }
+
+// --- MAGIA DA PÁGINA ÚNICA (SPA) ---
+
+// Abrir a notícia
+async function openArticle(post) {
+    currentReadingPost = post;
+    
+    // 1. Esconde o feed e mostra a leitura
+    document.getElementById('home-view').style.display = 'none';
+    document.getElementById('article-view').style.display = 'block';
+    window.scrollTo(0, 0); // Vai para o topo da página
+
+    // 2. Preenche os dados básicos rápidos
+    document.getElementById('art-source').innerText = post.srcName;
+    document.getElementById('art-title').innerHTML = post.title;
+    document.getElementById('art-content').innerHTML = '<i class="fas fa-spinner fa-spin"></i> A carregar texto completo...';
+    
+    const imgEl = document.getElementById('art-img');
+    imgEl.src = post.img;
+    imgEl.style.display = 'block';
+
+    updateSaveBtn();
+
+    // 3. Vai buscar o texto completo na API do jornal
+    try {
+        const urlLimpa = post.srcApi.split('?')[0]; // Tira o ?_embed do link
+        const res = await fetch(`${urlLimpa}/${post.id}`);
+        const data = await res.json();
+        document.getElementById('art-content').innerHTML = data.content.rendered;
+    } catch (e) {
+        document.getElementById('art-content').innerHTML = "Lamentamos, não foi possível carregar o texto completo deste jornal.";
+    }
+}
+
+// Voltar para a página inicial
+function closeArticle() {
+    document.getElementById('article-view').style.display = 'none';
+    document.getElementById('home-view').style.display = 'block';
+    currentReadingPost = null;
+}
+
+// --- FUNÇÕES EXTRA ---
 
 function filterCat(cat, btn) {
     document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
@@ -178,14 +255,45 @@ function filterCat(cat, btn) {
     resetAndLoad();
 }
 
+function resetAndLoad() { allPosts = []; currentPage = 1; loadNews(); }
+
 function toggleSavedView() {
     isSavedView = !isSavedView;
     document.getElementById('bookmark-btn').classList.toggle('active', isSavedView);
     document.getElementById('scroll-anchor').style.display = isSavedView ? 'none' : 'block';
+    if(isSavedView && currentReadingPost) closeArticle(); // Se estiver a ler, volta ao menu
     renderFeed();
 }
 
-function resetAndLoad() { allPosts = []; currentPage = 1; loadNews(); }
+function toggleSaveCurrent() {
+    if(!currentReadingPost) return;
+    let saved = JSON.parse(localStorage.getItem('news_saved') || '[]');
+    const idx = saved.findIndex(x => x.id === currentReadingPost.id);
+    if(idx > -1) saved.splice(idx, 1);
+    else saved.push(currentReadingPost);
+    localStorage.setItem('news_saved', JSON.stringify(saved));
+    updateSaveBtn();
+}
+
+function updateSaveBtn() {
+    if(!currentReadingPost) return;
+    const saved = JSON.parse(localStorage.getItem('news_saved') || '[]');
+    const isSaved = saved.some(x => x.id === currentReadingPost.id);
+    const btn = document.getElementById('art-save-btn');
+    btn.innerHTML = isSaved ? '<i class="fas fa-bookmark"></i> Guardada' : '<i class="far fa-bookmark"></i> Guardar';
+    btn.style.borderColor = isSaved ? 'var(--primary)' : 'var(--border)';
+    btn.style.color = isSaved ? 'var(--primary)' : 'var(--text)';
+}
+
+function shareCurrent() {
+    if (navigator.share) {
+        navigator.share({ title: currentReadingPost.title, url: window.location.href });
+    } else {
+        alert("Link copiado!");
+    }
+}
+
+// Iniciação
 const observer = new IntersectionObserver(e => e[0].isIntersecting && loadNews());
 observer.observe(document.getElementById('scroll-anchor'));
 window.onload = loadNews;
