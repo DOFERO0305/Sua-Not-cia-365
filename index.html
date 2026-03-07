@@ -4,23 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sua Notícia 365 | Premium</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            /* Tema Premium Vermelho Escuro */
-            --primary: #b91c1c; 
-            --primary-hover: #991b1b;
-            --accent: #facc15; /* Amarelo para destaques */
+            /* Inspirado na SIC Notícias / Al Jazeera */
+            --primary: #cc0000; 
+            --primary-dark: #990000;
+            --accent: #1e293b;
             
-            /* Cores Modo Claro */
-            --bg: #f4f6f8;
+            --bg: #f8fafc;
             --card: #ffffff;
-            --text: #0f172a;
+            --text: #1e293b;
             --text-meta: #64748b;
             --border: #e2e8f0;
-            --surface: #f8fafc;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            --surface: #f1f5f9;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            
+            /* Cores dos Ícones */
+            --icon-like: #e11d48;
+            --icon-save: #0284c7;
+            --icon-share: #10b981;
         }
 
         body.dark-mode {
@@ -30,138 +34,134 @@
             --text-meta: #94a3b8;
             --border: #334155;
             --surface: #0f172a;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); padding-bottom: 40px; transition: background 0.3s, color 0.3s; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); padding-bottom: 20px; transition: background 0.3s, color 0.3s; font-size: 15px; }
         
-        /* SCROLLBAR PREMIUM */
-        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
-        /* HEADER & NAVBAR (Glassmorphism) */
-        .navbar { position: sticky; top: 0; background: rgba(var(--bg), 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); z-index: 1000; padding: 15px 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
-        .nav-top { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+        /* HEADER PREMIUM (Estilo SIC Notícias) */
+        .navbar { position: sticky; top: 0; background: var(--primary); color: white; z-index: 1000; box-shadow: 0 4px 12px rgba(204,0,0,0.2); }
+        .nav-top { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 12px 20px; }
         .logo-area { display: flex; align-items: center; gap: 15px; }
-        .menu-toggle { background: none; border: none; font-size: 1.5rem; color: var(--text); cursor: pointer; }
-        .logo { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.8rem; color: var(--text); text-decoration: none; letter-spacing: -0.5px; }
-        .logo span { color: var(--primary); }
+        .menu-toggle { background: none; border: none; font-size: 1.3rem; color: white; cursor: pointer; }
+        .logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.4rem; color: white; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; }
         
-        /* Widget de Meteorologia */
-        .weather-widget { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600; color: var(--text-meta); background: var(--card); padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border); }
-        .weather-widget i { color: #f59e0b; }
+        /* Widget de Clima Topo */
+        .weather-widget { font-size: 0.8rem; font-weight: 600; background: rgba(0,0,0,0.2); padding: 5px 10px; border-radius: 4px; display: flex; align-items: center; gap: 5px; }
+        .weather-widget i { color: #facc15; }
 
-        /* MENU LATERAL PREMIUM */
-        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(3px); z-index: 1999; display: none; opacity: 0; transition: 0.3s; }
+        /* BARRA DE DESTAQUES (Última Hora) */
+        .breaking-bar { background: var(--accent); color: white; padding: 8px 20px; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 15px; overflow: hidden; white-space: nowrap; }
+        .breaking-label { background: var(--primary); padding: 2px 8px; border-radius: 3px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.7rem; }
+        .breaking-text { animation: scrollLeft 20s linear infinite; }
+        @keyframes scrollLeft { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+        /* MENU LATERAL */
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1999; display: none; opacity: 0; transition: 0.3s; }
         .sidebar-overlay.open { display: block; opacity: 1; }
-        .sidebar { position: fixed; top: 0; left: -320px; width: 300px; height: 100vh; background: var(--card); z-index: 2000; transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1); padding: 25px; border-right: 1px solid var(--border); overflow-y: auto; box-shadow: var(--shadow); display: flex; flex-direction: column; }
+        .sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100vh; background: var(--card); z-index: 2000; transition: left 0.3s ease; padding: 20px; border-right: 1px solid var(--border); overflow-y: auto; display: flex; flex-direction: column; }
         .sidebar.open { left: 0; }
-        .sidebar-close { background: var(--surface); border: 1px solid var(--border); width: 36px; height: 36px; border-radius: 50%; color: var(--text); cursor: pointer; float: right; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-        .sidebar-close:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .sidebar-close { background: none; border: none; font-size: 1.4rem; color: var(--text); cursor: pointer; align-self: flex-end; }
         
-        .sidebar-content { flex-grow: 1; }
-        .sidebar h2 { margin-top: 5px; font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--text); margin-bottom: 30px; }
-        .sidebar h2 span { color: var(--primary); }
-        .side-btn { display: flex; align-items: center; gap: 12px; width: 100%; background: none; border: none; color: var(--text); padding: 14px 15px; font-size: 1rem; font-weight: 600; cursor: pointer; border-radius: 10px; transition: 0.2s; text-align: left; margin-bottom: 5px; }
-        .side-btn:hover, .side-btn.active { background: rgba(185, 28, 28, 0.08); color: var(--primary); }
-        .side-btn i { width: 20px; text-align: center; }
+        .sidebar h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; color: var(--primary); margin-bottom: 25px; text-transform: uppercase; }
+        .side-btn { display: flex; align-items: center; gap: 12px; width: 100%; background: none; border: none; color: var(--text); padding: 12px 10px; font-size: 0.95rem; font-weight: 600; cursor: pointer; border-radius: 6px; transition: 0.2s; text-align: left; }
+        .side-btn:hover, .side-btn.active { background: var(--surface); color: var(--primary); }
+        .side-btn i { width: 18px; text-align: center; font-size: 1.1rem; }
         
-        /* Contactos no Menu Lateral */
-        .sidebar-footer { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--text-meta); line-height: 1.6; }
-        .contact-link { color: var(--text); text-decoration: none; font-weight: 600; display: block; margin-top: 5px; }
-        .contact-link i { color: var(--primary); width: 15px; }
+        /* Ícones coloridos no menu */
+        .i-dark { color: #475569; }
+        .i-saved { color: var(--icon-save); }
+        .i-new { color: #f59e0b; }
+        
+        .sidebar-footer { margin-top: auto; padding-top: 15px; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--text-meta); line-height: 1.5; }
+        .contact-link { color: var(--text); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+        .contact-link i { color: var(--primary); }
 
         /* PESQUISA E CATEGORIAS */
-        .top-bar-controls { max-width: 1200px; margin: 20px auto; padding: 0 20px; display: flex; flex-direction: column; gap: 15px; }
-        .search-container { position: relative; width: 100%; max-width: 600px; margin: 0 auto; }
-        .search-container input { width: 100%; padding: 16px 20px 16px 50px; border-radius: 100px; border: 1px solid var(--border); background: var(--card); color: var(--text); font-family: inherit; font-size: 1rem; box-shadow: var(--shadow); outline: none; transition: border-color 0.2s; }
-        .search-container input:focus { border-color: var(--primary); }
-        .search-container i { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--text-meta); font-size: 1.1rem; }
+        .controls-container { max-width: 1200px; margin: 15px auto; padding: 0 20px; }
+        .search-box { position: relative; margin-bottom: 15px; }
+        .search-box input { width: 100%; padding: 12px 15px 12px 40px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--text); font-family: inherit; font-size: 0.95rem; box-shadow: var(--shadow); outline: none; }
+        .search-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-meta); font-size: 0.9rem; }
         
-        .categories { display: flex; gap: 10px; overflow-x: auto; padding: 5px 0; scrollbar-width: none; justify-content: center; }
-        .cat-item { padding: 10px 24px; background: var(--card); border: 1px solid var(--border); border-radius: 100px; font-size: 0.9rem; font-weight: 700; white-space: nowrap; cursor: pointer; transition: 0.2s; color: var(--text-meta); }
-        .cat-item:hover { border-color: var(--primary); color: var(--primary); }
+        .categories { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
+        .cat-item { padding: 6px 16px; background: var(--card); border: 1px solid var(--border); border-radius: 4px; font-size: 0.85rem; font-weight: 700; white-space: nowrap; cursor: pointer; color: var(--text-meta); text-transform: uppercase; letter-spacing: 0.5px; }
         .cat-item.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-        /* GRELHA DE NOTÍCIAS PREMIUM */
-        .feed { padding: 20px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 30px; min-height: 50vh; }
-        .news-card { background: var(--card); border-radius: var(--radius-lg); border: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; cursor: pointer; transition: all 0.3s ease; box-shadow: var(--shadow); position: relative; }
-        .news-card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); border-color: var(--primary); }
-        .news-img { width: 100%; height: 220px; object-fit: cover; background: var(--surface); border-bottom: 1px solid var(--border); }
-        .news-body { padding: 25px; display: flex; flex-direction: column; flex-grow: 1; }
-        .news-tag { display: inline-block; background: rgba(185, 28, 28, 0.1); color: var(--primary); padding: 4px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; width: fit-content; letter-spacing: 0.5px; }
-        .news-title { font-size: 1.25rem; font-weight: 800; line-height: 1.4; margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; color: var(--text); }
-        .news-meta { font-size: 0.85rem; color: var(--text-meta); margin-top: auto; display: flex; align-items: center; gap: 6px; font-weight: 500; }
+        /* GRELHA DE NOTÍCIAS (ALINHADA) */
+        .feed { padding: 0 20px 20px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; min-height: 50vh; }
+        .news-card { background: var(--card); border-radius: 8px; border: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; cursor: pointer; box-shadow: var(--shadow); transition: 0.2s; }
+        .news-card:hover { border-color: var(--primary); }
+        .news-img { width: 100%; height: 180px; object-fit: cover; background: var(--surface); }
+        .news-body { padding: 15px; display: flex; flex-direction: column; flex-grow: 1; }
+        .news-tag { color: var(--primary); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px; }
+        .news-title { font-size: 1.05rem; font-weight: 700; line-height: 1.4; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; color: var(--text); }
+        .news-meta { font-size: 0.75rem; color: var(--text-meta); margin-top: auto; display: flex; justify-content: space-between; align-items: center; font-weight: 500; border-top: 1px solid var(--border); padding-top: 10px; }
 
-        /* VISTA DE LEITURA DO ARTIGO */
-        #article-view { display: none; background: var(--bg); min-height: 100vh; padding-bottom: 80px; }
-        .article-header { position: sticky; top: 0; width: 100%; background: rgba(var(--bg), 0.95); backdrop-filter: blur(12px); padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
-        .back-btn { background: var(--card); border: 1px solid var(--border); padding: 8px 16px; border-radius: 100px; font-size: 1rem; color: var(--text); font-weight: 700; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: 0.2s; }
-        .back-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        /* VISTA DE LEITURA (ARTIGO) */
+        #article-view { display: none; background: var(--card); min-height: 100vh; padding-bottom: 50px; }
+        .article-header { position: sticky; top: 0; background: var(--card); padding: 12px 20px; border-bottom: 1px solid var(--border); z-index: 100; display: flex; align-items: center; box-shadow: var(--shadow); }
+        .back-btn { background: none; border: none; font-size: 0.95rem; color: var(--text); font-weight: 700; display: flex; align-items: center; gap: 8px; cursor: pointer; font-family: inherit; text-transform: uppercase; }
         
-        .article-container { max-width: 800px; margin: 40px auto 0; padding: 0 20px; }
-        .article-title { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 700; line-height: 1.2; margin-bottom: 30px; color: var(--text); }
+        .article-container { max-width: 700px; margin: 20px auto 0; padding: 0 20px; }
+        .article-tag { display: inline-block; background: var(--primary); color: white; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; }
+        .article-title { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; line-height: 1.25; margin-bottom: 20px; color: var(--text); }
         
-        /* Botões de Ação do Artigo */
-        .btn-action-row { display: flex; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
-        .btn-action { flex: 1; min-width: 140px; border: 1px solid var(--border); padding: 14px; border-radius: 12px; font-weight: 700; cursor: pointer; background: var(--card); color: var(--text); font-family: inherit; font-size: 0.95rem; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-        .btn-action:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); }
-        .btn-action.saved { background: var(--primary); color: white; border-color: var(--primary); }
-        .btn-action.liked { color: #e11d48; border-color: #e11d48; background: rgba(225, 29, 72, 0.05); }
+        /* Botões Coloridos e Alinhados */
+        .btn-action-row { display: flex; gap: 10px; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
+        .btn-action { flex: 1; padding: 10px; border-radius: 6px; border: 1px solid var(--border); font-weight: 700; cursor: pointer; background: var(--surface); color: var(--text); font-family: inherit; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn-action i { font-size: 1rem; }
+        
+        .btn-action.like-btn i { color: var(--icon-like); }
+        .btn-action.like-btn.liked { background: rgba(225, 29, 72, 0.1); border-color: var(--icon-like); color: var(--icon-like); }
+        
+        .btn-action.save-btn i { color: var(--icon-save); }
+        .btn-action.save-btn.saved { background: rgba(2, 132, 199, 0.1); border-color: var(--icon-save); color: var(--icon-save); }
+        
+        .btn-action.share-btn i { color: var(--icon-share); }
 
-        .article-main-img { width: 100%; border-radius: var(--radius-lg); margin-bottom: 40px; object-fit: cover; box-shadow: var(--shadow); max-height: 450px; }
+        .article-main-img { width: 100%; border-radius: 6px; margin-bottom: 25px; object-fit: cover; max-height: 400px; }
         
-        /* Tipografia Premium para o texto */
-        .article-content { font-size: 1.15rem; line-height: 1.9; color: var(--text); }
-        .article-content p { margin-bottom: 1.8rem; }
-        .article-content h2, .article-content h3 { margin: 2.5rem 0 1rem; font-family: 'Playfair Display', serif; }
-        .article-content img { max-width: 100%; height: auto; border-radius: var(--radius-md); margin: 30px 0; box-shadow: var(--shadow); }
-        .article-content a { color: var(--primary); text-decoration: none; font-weight: 600; }
+        .article-content { font-size: 1rem; line-height: 1.7; color: var(--text); }
+        .article-content p { margin-bottom: 1.5rem; }
+        .article-content img { max-width: 100%; height: auto; border-radius: 6px; margin: 20px 0; }
         
-        /* Secção Relacionados */
-        .related-section { margin-top: 60px; padding-top: 40px; border-top: 2px solid var(--border); }
-        .related-section h3 { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; margin-bottom: 25px; }
-        .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
-        .related-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; }
-        .related-card:hover { border-color: var(--primary); transform: translateY(-4px); }
-        .related-card img { width: 100%; height: 140px; object-fit: cover; border-bottom: 1px solid var(--border); }
-        .related-card h4 { padding: 15px; font-size: 1rem; line-height: 1.4; font-weight: 700; color: var(--text); }
+        /* Relacionados - Agora 4 notícias */
+        .related-section { margin-top: 40px; padding-top: 30px; border-top: 4px solid var(--border); }
+        .related-section h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 15px; text-transform: uppercase; color: var(--primary); }
+        .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; }
+        .related-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; }
+        .related-card img { width: 100%; height: 100px; object-fit: cover; }
+        .related-card h4 { padding: 10px; font-size: 0.85rem; line-height: 1.3; font-weight: 600; color: var(--text); }
 
-        /* Rodapés */
-        .main-footer { margin-top: 80px; padding: 50px 20px; text-align: center; border-top: 1px solid var(--border); background: var(--card); }
-        .main-footer h4 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--text); margin-bottom: 15px; }
-        .main-footer p { color: var(--text-meta); font-size: 0.95rem; line-height: 1.8; margin-bottom: 20px; }
-        .footer-contacts { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        .footer-contacts a { color: var(--primary); text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 8px; background: rgba(185, 28, 28, 0.05); padding: 10px 20px; border-radius: 100px; }
-        
-        .loader { text-align: center; padding: 60px; grid-column: 1/-1; color: var(--primary); font-size: 2rem; }
+        .loader { text-align: center; padding: 40px; grid-column: 1/-1; color: var(--primary); font-size: 1.5rem; }
     </style>
 </head>
 <body>
 
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 <div class="sidebar" id="sidebar">
-    <div class="sidebar-content">
-        <button class="sidebar-close" onclick="toggleSidebar()"><i class="fas fa-times"></i></button>
-        <h2>Sua Notícia<br><span>365</span></h2>
+    <button class="sidebar-close" onclick="toggleSidebar()"><i class="fas fa-arrow-left"></i></button>
+    <h2>Sua Notícia</h2>
 
-        <button class="side-btn" onclick="toggleTheme()"><i class="fas fa-moon" id="theme-icon"></i> <span id="theme-text">Modo Escuro</span></button>
-        <button class="side-btn" id="sidebar-saved-btn" onclick="toggleSavedView()"><i class="fas fa-bookmark"></i> Ler Mais Tarde</button>
-        
-        <div style="margin-top: 30px; border-top: 1px solid var(--border); padding-top: 20px;">
-            <p style="font-size: 0.8rem; color: var(--text-meta); text-transform: uppercase; margin-bottom: 10px; font-weight: 700;">Ordenar Por</p>
-            <button class="side-btn active" id="btn-sort-new" onclick="setSort('new')"><i class="fas fa-sort-amount-down"></i> Mais Recentes</button>
-            <button class="side-btn" id="btn-sort-old" onclick="setSort('old')"><i class="fas fa-sort-amount-up"></i> Mais Antigas</button>
-        </div>
+    <button class="side-btn" onclick="toggleTheme()"><i class="fas fa-moon i-dark" id="theme-icon"></i> <span id="theme-text">Modo Escuro</span></button>
+    <button class="side-btn" id="sidebar-saved-btn" onclick="toggleSavedView()"><i class="fas fa-bookmark i-saved"></i> Ler Mais Tarde</button>
+    
+    <div style="margin-top: 25px; border-top: 1px solid var(--border); padding-top: 15px;">
+        <p style="font-size: 0.75rem; color: var(--text-meta); text-transform: uppercase; margin-bottom: 8px; font-weight: 700;">Filtragem</p>
+        <button class="side-btn active" id="btn-sort-new" onclick="setSort('new')"><i class="fas fa-bolt i-new"></i> Mais Recentes</button>
+        <button class="side-btn" id="btn-sort-old" onclick="setSort('old')"><i class="fas fa-history i-dark"></i> Mais Antigas</button>
     </div>
     
     <div class="sidebar-footer">
         <strong>&copy; Sua Notícia 365</strong><br>
-        Criado por Donaldo F. Rodrigues<br><br>
-        <a href="https://wa.me/258849085157" class="contact-link" target="_blank"><i class="fas fa-phone-alt"></i> +258 84 908 5157</a>
+        Criado por Donaldo F. Rodrigues<br>
+        <a href="https://wa.me/258849085157" class="contact-link" target="_blank"><i class="fab fa-whatsapp"></i> +258 84 908 5157</a>
         <a href="mailto:donald.fer.fer@gmail.com" class="contact-link"><i class="fas fa-envelope"></i> donald.fer.fer@gmail.com</a>
     </div>
 </div>
@@ -171,21 +171,24 @@
         <div class="nav-top">
             <div class="logo-area">
                 <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-                <div class="logo" onclick="resetAndLoad()">Sua Notícia <span>365</span></div>
+                <div class="logo" onclick="resetAndLoad()">Sua Notícia</div>
             </div>
-            <div class="weather-widget" id="weather-widget">
-                <i class="fas fa-spinner fa-spin"></i> Maputo
-            </div>
+            <div class="weather-widget" id="weather-widget"><i class="fas fa-spinner fa-spin"></i> Maputo</div>
         </div>
     </nav>
     
-    <div class="top-bar-controls">
-        <div class="search-container">
+    <div class="breaking-bar">
+        <span class="breaking-label">Destaque</span>
+        <div class="breaking-text" id="breaking-ticker">Bem-vindo ao Sua Notícia 365 - O seu agregador de informação atualizada.</div>
+    </div>
+    
+    <div class="controls-container">
+        <div class="search-box">
             <i class="fas fa-search"></i>
-            <input type="text" id="search-input" placeholder="Pesquisar notícias, política, desporto..." onkeyup="if(event.key==='Enter') resetAndLoad()">
+            <input type="text" id="search-input" placeholder="Pesquisar..." onkeyup="if(event.key==='Enter') resetAndLoad()">
         </div>
         <div class="categories">
-            <div class="cat-item active" onclick="filterCat('', this)">Todas as Notícias</div>
+            <div class="cat-item active" onclick="filterCat('', this)">Todas</div>
             <div class="cat-item" onclick="filterCat('política', this)">Política</div>
             <div class="cat-item" onclick="filterCat('economia', this)">Economia</div>
             <div class="cat-item" onclick="filterCat('sociedade', this)">Sociedade</div>
@@ -195,76 +198,60 @@
 
     <main class="feed" id="feed"></main>
     <div id="scroll-anchor" class="loader"><i class="fas fa-circle-notch fa-spin"></i></div>
-    
-    <footer class="main-footer">
-        <h4>Sua Notícia 365</h4>
-        <p>O seu agregador premium de informação. Todas as notícias de Moçambique num só lugar.<br>Criado por Donaldo Fernando Rodrigues.</p>
-        <div class="footer-contacts">
-            <a href="https://wa.me/258849085157" target="_blank"><i class="fas fa-phone-alt"></i> +258 84 908 5157</a>
-            <a href="mailto:donald.fer.fer@gmail.com"><i class="fas fa-envelope"></i> donald.fer.fer@gmail.com</a>
-        </div>
-    </footer>
 </div>
 
 <div id="article-view">
     <div class="article-header">
-        <button class="back-btn" onclick="closeArticle()"><i class="fas fa-arrow-left"></i> Voltar às Notícias</button>
+        <button class="back-btn" onclick="closeArticle()"><i class="fas fa-chevron-left"></i> Voltar</button>
     </div>
 
     <main class="article-container">
-        <div id="source-tag" class="news-tag">...</div>
+        <div id="source-tag" class="article-tag">...</div>
         <h1 id="article-title" class="article-title">...</h1>
         
         <div class="btn-action-row">
-            <button id="btn-save" class="btn-action" onclick="toggleSaveArticle()"><i class="far fa-bookmark"></i> Guardar para ler depois</button>
-            <button id="btn-like" class="btn-action" onclick="toggleLike()"><i class="far fa-heart"></i> Adorar</button>
-            <button class="btn-action" onclick="shareArticle()"><i class="fas fa-share-alt"></i> Partilhar com amigos</button>
+            <button id="btn-like" class="btn-action like-btn" onclick="toggleLike()"><i class="fas fa-heart"></i> Adorar</button>
+            <button id="btn-save" class="btn-action save-btn" onclick="toggleSaveArticle()"><i class="fas fa-bookmark"></i> Guardar</button>
+            <button class="btn-action share-btn" onclick="shareArticle()"><i class="fas fa-share-alt"></i> Partilhar</button>
         </div>
 
         <img id="feat-img" class="article-main-img" src="" style="display:none">
-        <div id="article-content" class="article-content"><i class="fas fa-spinner fa-spin"></i> A carregar texto completo...</div>
+        <div id="article-content" class="article-content"><i class="fas fa-spinner fa-spin"></i> A carregar notícia...</div>
         
         <div class="related-section" id="related-section" style="display:none;">
-            <h3>Leia também no mesmo jornal</h3>
+            <h3>Leia Também</h3>
             <div class="related-grid" id="related-grid"></div>
         </div>
     </main>
 </div>
 
 <script>
-// A Magia da Meteorologia (Open-Meteo API)
+// Clima
 async function loadWeather() {
     try {
-        // Coordenadas de Maputo
         const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=-25.9653&longitude=32.5898&current_weather=true');
         const data = await res.json();
-        const temp = Math.round(data.current_weather.temperature);
-        document.getElementById('weather-widget').innerHTML = `<i class="fas fa-sun"></i> Maputo: ${temp}°C`;
-    } catch(e) {
-        document.getElementById('weather-widget').innerHTML = `<i class="fas fa-cloud"></i> Indisponível`;
-    }
+        document.getElementById('weather-widget').innerHTML = `<i class="fas fa-sun"></i> ${Math.round(data.current_weather.temperature)}°C`;
+    } catch(e) { document.getElementById('weather-widget').innerHTML = `<i class="fas fa-cloud"></i> N/D`; }
 }
 
-// FONTES DO AGREGADOR
+// Lista atualizada com os novos jornais pedidos
 const SOURCES = [
     { name: "O País", api: "https://opais.co.mz/wp-json/wp/v2/posts?_embed", slug: "opais" },
     { name: "Carta de MZ", api: "https://cartamz.com/wp-json/wp/v2/posts?_embed", slug: "carta" },
     { name: "MZ News", api: "https://mznews.co.mz/wp-json/wp/v2/posts?_embed", slug: "mznews" },
     { name: "Folha de Maputo", api: "https://www.folhademaputo.co.mz/wp-json/wp/v2/posts?_embed", slug: "folha" },
     { name: "Evidências", api: "https://evidencias.co.mz/wp-json/wp/v2/posts?_embed", slug: "evidencias" },
-    { name: "Integrity", api: "https://integritymag.co.mz/wp-json/wp/v2/posts?_embed", slug: "integrity" },
-    { name: "Mais de MZ", api: "https://mais.co.mz/wp-json/wp/v2/posts?_embed", slug: "mais" },
+    { name: "Integrity Mag", api: "https://integritymag.co.mz/wp-json/wp/v2/posts?_embed", slug: "integrity" },
     { name: "Jornal Ikweli", api: "https://www.jornalikweli.co.mz/wp-json/wp/v2/posts?_embed", slug: "ikweli" },
-    { name: "Mozambique Times", api: "https://mozambiquetimes.co.mz/wp-json/wp/v2/posts?_embed", slug: "moztimes" },
-    { name: "MMO Notícias", api: "https://noticias.mmo.co.mz/wp-json/wp/v2/posts?_embed", slug: "mmo" },
-    { name: "Jornal Domingo", api: "https://www.jornaldomingo.co.mz/wp-json/wp/v2/posts?_embed", slug: "domingo" },
-    { name: "SAVANA", api: "https://savana.co.mz/wp-json/wp/v2/posts?_embed", slug: "savana" }
+    { name: "Jornal Rigor", api: "https://jornalrigor.co.mz/wp-json/wp/v2/posts?_embed", slug: "rigor" },
+    { name: "Times de Todos", api: "https://www.timesdetodos.com/wp-json/wp/v2/posts?_embed", slug: "times" },
+    { name: "Mais de MZ", api: "https://mais.co.mz/wp-json/wp/v2/posts?_embed", slug: "mais" }
 ];
 
 let allPosts = [], currentPage = 1, isFetching = false, currentCat = '', isSavedView = false, sortOrder = 'new';
 let currentReadingPost = null;
 
-// INTERFACE
 function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('open');
     document.getElementById('sidebarOverlay').classList.toggle('open');
@@ -272,7 +259,7 @@ function toggleSidebar() {
 
 function toggleTheme() {
     const isDark = document.body.classList.toggle('dark-mode');
-    document.getElementById('theme-icon').className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+    document.getElementById('theme-icon').className = isDark ? 'fas fa-sun i-new' : 'fas fa-moon i-dark';
     document.getElementById('theme-text').innerText = isDark ? 'Modo Claro' : 'Modo Escuro';
 }
 
@@ -280,11 +267,9 @@ function setSort(order) {
     sortOrder = order;
     document.getElementById('btn-sort-new').classList.toggle('active', order === 'new');
     document.getElementById('btn-sort-old').classList.toggle('active', order === 'old');
-    toggleSidebar();
-    renderFeed();
+    toggleSidebar(); renderFeed();
 }
 
-// LÓGICA DO FEED E O "SUPER ID"
 async function loadNews() {
     if (isFetching || isSavedView) return;
     isFetching = true;
@@ -296,35 +281,33 @@ async function loadNews() {
             let url = `${src.api}&per_page=3&page=${currentPage}`;
             if (query) url += `&search=${encodeURIComponent(query)}`;
             const res = await fetch(url);
-            if (!res.ok) throw new Error('CORS block ou Erro de Servidor');
+            if (!res.ok) throw new Error('Bloqueio');
             const data = await res.json();
             
-            return data.map(p => {
-                // Aqui criamos o Super ID para evitar Notícias Repetidas e Erros no Guardar
-                const uniqueId = `${src.slug}-${p.id}`; 
-                return {
-                    uniqueId: uniqueId, 
-                    apiId: p.id,
-                    title: p.title.rendered, 
-                    date: p.date, 
-                    srcName: src.name, 
-                    srcSlug: src.slug,
-                    apiBase: src.api.split('?')[0],
-                    img: p._embedded?.['wp:featuredmedia']?.[0]?.source_url || 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?q=80&w=600'
-                };
-            });
-        } catch (e) { return []; } // Ignora os sites que bloqueiam
+            return data.map(p => ({
+                uniqueId: `${src.slug}-${p.id}`, 
+                apiId: p.id,
+                title: p.title.rendered, 
+                date: p.date, 
+                srcName: src.name, 
+                srcSlug: src.slug,
+                apiBase: src.api.split('?')[0],
+                img: p._embedded?.['wp:featuredmedia']?.[0]?.source_url || 'https://via.placeholder.com/400x200?text=Sua+Notícia+365'
+            }));
+        } catch (e) { return []; }
     });
 
     const results = await Promise.all(fetchPromises);
     const newPosts = results.flat();
     
-    // Filtro para garantir que não entram duplicados se a API falhar
     newPosts.forEach(newP => {
-        if(!allPosts.some(oldP => oldP.uniqueId === newP.uniqueId)) {
-            allPosts.push(newP);
-        }
+        if(!allPosts.some(oldP => oldP.uniqueId === newP.uniqueId)) { allPosts.push(newP); }
     });
+    
+    // Atualiza o Destaque no topo com o título da primeira notícia carregada
+    if(allPosts.length > 0 && currentPage === 1) {
+        document.getElementById('breaking-ticker').innerText = allPosts[0].title + " | " + (allPosts[1]?.title || "");
+    }
 
     renderFeed();
     isFetching = false;
@@ -334,10 +317,8 @@ async function loadNews() {
 function renderFeed() {
     const feed = document.getElementById('feed');
     feed.innerHTML = ''; 
-    
     let displayList = isSavedView ? JSON.parse(localStorage.getItem('premium_news_saved') || '[]') : [...allPosts];
     
-    // Ordenar
     if(sortOrder === 'new') { displayList.sort((a, b) => new Date(b.date) - new Date(a.date)); } 
     else { displayList.sort((a, b) => new Date(a.date) - new Date(b.date)); }
     
@@ -350,7 +331,10 @@ function renderFeed() {
             <div class="news-body">
                 <span class="news-tag">${p.srcName}</span>
                 <h3 class="news-title">${p.title}</h3>
-                <div class="news-meta"><i class="far fa-clock"></i> ${new Date(p.date).toLocaleDateString('pt-MZ')}</div>
+                <div class="news-meta">
+                    <span><i class="far fa-clock"></i> ${new Date(p.date).toLocaleDateString('pt-MZ')}</span>
+                    <i class="fas fa-chevron-right" style="color:var(--primary); font-size: 0.7rem;"></i>
+                </div>
             </div>`;
         feed.appendChild(card);
     });
@@ -359,9 +343,7 @@ function renderFeed() {
 function filterCat(cat, btn) {
     document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
     btn.classList.add('active');
-    currentCat = cat;
-    isSavedView = false;
-    resetAndLoad();
+    currentCat = cat; isSavedView = false; resetAndLoad();
 }
 
 function toggleSavedView() {
@@ -375,34 +357,29 @@ function toggleSavedView() {
 
 function resetAndLoad() { allPosts = []; currentPage = 1; loadNews(); }
 
-// LÓGICA DO ARTIGO
 async function openArticle(post) {
     currentReadingPost = post;
-    
     document.getElementById('home-view').style.display = 'none';
     document.getElementById('article-view').style.display = 'block';
     window.scrollTo(0, 0);
 
     document.getElementById('source-tag').innerText = post.srcName;
     document.getElementById('article-title').innerHTML = post.title;
-    document.getElementById('article-content').innerHTML = '<i class="fas fa-spinner fa-spin"></i> A descarregar o texto original...';
+    document.getElementById('article-content').innerHTML = '<i class="fas fa-spinner fa-spin"></i> A descarregar...';
     
     const img = document.getElementById('feat-img');
-    if (post.img && !post.img.includes('unsplash')) {
+    if (post.img && !post.img.includes('placeholder')) {
         img.src = post.img; img.style.display = 'block';
     } else { img.style.display = 'none'; }
 
     updateActionBtns();
     renderRelatedPosts(post);
 
-    // Puxar o texto completo da API usando o apiId original
     try {
         const res = await fetch(`${post.apiBase}/${post.apiId}?_embed`);
         const p = await res.json();
         document.getElementById('article-content').innerHTML = p.content.rendered;
-    } catch(e) { 
-        document.getElementById('article-content').innerHTML = "Lamentamos, os bloqueios de segurança do jornal não permitem ler a notícia completa por aqui."; 
-    }
+    } catch(e) { document.getElementById('article-content').innerHTML = "Conteúdo restrito pelo jornal original."; }
 }
 
 function closeArticle() {
@@ -413,7 +390,6 @@ function closeArticle() {
     if(isSavedView) renderFeed(); 
 }
 
-// BOTÕES DE AÇÃO COM SUPER ID
 function toggleSaveArticle() {
     if(!currentReadingPost) return;
     let saved = JSON.parse(localStorage.getItem('premium_news_saved') || '[]');
@@ -434,30 +410,25 @@ function toggleLike() {
 
 function updateActionBtns() {
     if(!currentReadingPost) return;
-    
-    const saved = JSON.parse(localStorage.getItem('premium_news_saved') || '[]');
-    const isSaved = saved.some(x => x.uniqueId === currentReadingPost.uniqueId);
+    const saved = JSON.parse(localStorage.getItem('premium_news_saved') || '[]').some(x => x.uniqueId === currentReadingPost.uniqueId);
     const btnSave = document.getElementById('btn-save');
-    btnSave.classList.toggle('saved', isSaved);
-    btnSave.innerHTML = isSaved ? '<i class="fas fa-bookmark"></i> Guardada' : '<i class="far fa-bookmark"></i> Guardar para ler depois';
-
-    const liked = JSON.parse(localStorage.getItem('premium_news_liked') || '[]');
-    const isLiked = liked.includes(currentReadingPost.uniqueId);
+    btnSave.classList.toggle('saved', saved);
+    
+    const liked = JSON.parse(localStorage.getItem('premium_news_liked') || '[]').includes(currentReadingPost.uniqueId);
     const btnLike = document.getElementById('btn-like');
-    btnLike.classList.toggle('liked', isLiked);
-    btnLike.innerHTML = isLiked ? '<i class="fas fa-heart"></i> Adorado' : '<i class="far fa-heart"></i> Adorar';
+    btnLike.classList.toggle('liked', liked);
 }
 
 function shareArticle() { 
-    if (navigator.share && currentReadingPost) {
-        navigator.share({ title: currentReadingPost.title, url: window.location.href }); 
-    } else { alert("Partilha ativada!"); }
+    if (navigator.share && currentReadingPost) { navigator.share({ title: currentReadingPost.title, url: window.location.href }); } 
+    else { alert("Pronto a partilhar!"); }
 }
 
 function renderRelatedPosts(currentPost) {
     const section = document.getElementById('related-section');
     const grid = document.getElementById('related-grid');
-    let related = allPosts.filter(p => p.srcSlug === currentPost.srcSlug && p.uniqueId !== currentPost.uniqueId).slice(0, 3);
+    // Agora selecionamos 4 artigos (slice 0, 4)
+    let related = allPosts.filter(p => p.srcSlug === currentPost.srcSlug && p.uniqueId !== currentPost.uniqueId).slice(0, 4);
     
     if(related.length > 0) {
         grid.innerHTML = related.map(p => `
@@ -475,13 +446,8 @@ function openRelated(uniqueId) {
     if(post) { window.scrollTo(0,0); openArticle(post); }
 }
 
-// INIT
 const observer = new IntersectionObserver(e => e[0].isIntersecting && loadNews());
-window.onload = () => {
-    loadWeather();
-    observer.observe(document.getElementById('scroll-anchor'));
-    loadNews();
-};
+window.onload = () => { loadWeather(); observer.observe(document.getElementById('scroll-anchor')); loadNews(); };
 </script>
 </body>
 </html>
