@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sua Notícia 365 | Agregador Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0284c7; /* Azul Premium */
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text: #0f172a;
+            --text-meta: #64748b;
+            --border: #e2e8f0;
+        }
+
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; }
+        
+        /* Cabeçalho Premium */
+        header { background: var(--surface); padding: 20px 5%; border-bottom: 2px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .logo { font-size: 1.8rem; font-weight: 800; letter-spacing: -1px; }
+        .logo span { color: var(--primary); }
+        
+        /* Grelha de Notícias */
+        .container { max-width: 1400px; margin: 30px auto; padding: 0 20px; }
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
+        
+        /* Cartão de Notícia */
+        .news-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; cursor: pointer; }
+        .news-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-color: var(--primary); }
+        
+        .news-img { width: 100%; height: 200px; object-fit: cover; background: #e2e8f0; }
+        .news-content { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
+        .news-source { display: inline-block; background: #f1f5f9; color: var(--primary); padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; width: fit-content; }
+        .news-title { font-family: 'Merriweather', serif; font-size: 1.1rem; line-height: 1.5; margin: 0 0 15px 0; color: var(--text); }
+        .news-footer { margin-top: auto; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--text-meta); border-top: 1px solid var(--border); padding-top: 15px; }
+        
+        .loader { text-align: center; padding: 40px; color: var(--primary); font-size: 2rem; grid-column: 1 / -1; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">Sua Notícia <span>365</span></div>
+    <div style="font-weight: 600; color: var(--text-meta);"><i class="fas fa-sync fa-spin" id="sync-icon" style="display:none;"></i> Atualizado ao minuto</div>
+</header>
+
+<div class="container">
+    <div class="news-grid" id="news-feed">
+        <div class="loader" id="loader"><i class="fas fa-circle-notch fa-spin"></i> A carregar notícias...</div>
+    </div>
+</div>
+
+<script>
+    // Dicionário com as nossas primeiras fontes para testar o motor
+    const FONTES_RSS = [
+        { nome: 'O País', url: 'https://opais.co.mz/feed/' },
+        { nome: 'Carta de Moçambique', url: 'https://cartamz.com/feed/' },
+        { nome: 'Mz News', url: 'https://mznews.co.mz/feed/' }
+    ];
+
+    const RSS2JSON_API = 'https://api.rss2json.com/v1/api.json?rss_url=';
+
+    // Função para extrair imagem do conteúdo se a API não enviar uma miniatura
+    function extrairImagem(conteudo) {
+        const div = document.createElement('div');
+        div.innerHTML = conteudo;
+        const img = div.querySelector('img');
+        return img ? img.src : 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?q=80&w=800&auto=format&fit=crop'; // Imagem padrão
+    }
+
+    async function carregarNoticias() {
+        document.getElementById('sync-icon').style.display = 'inline-block';
+        let todasNoticias = [];
+
+        for (const fonte of FONTES_RSS) {
+            try {
+                const resposta = await fetch(RSS2JSON_API + encodeURIComponent(fonte.url));
+                const dados = await resposta.json();
+                
+                if (dados.status === 'ok') {
+                    // Pega as 5 notícias mais recentes de cada jornal
+                    const artigos = dados.items.slice(0, 5).map(item => ({
+                        titulo: item.title,
+                        link: item.link,
+                        data: new Date(item.pubDate),
+                        imagem: item.thumbnail || extrairImagem(item.description || item.content),
+                        fonte: fonte.nome
+                    }));
+                    todasNoticias = [...todasNoticias, ...artigos];
+                }
+            } catch (erro) {
+                console.error(`Falha ao carregar ${fonte.nome}`);
+            }
+        }
+
+        // Organiza todas as notícias das mais recentes para as mais antigas
+        todasNoticias.sort((a, b) => b.data - a.data);
+        renderizarNoticias(todasNoticias);
+        document.getElementById('sync-icon').style.display = 'none';
+    }
+
+    function renderizarNoticias(noticias) {
+        const feed = document.getElementById('news-feed');
+        feed.innerHTML = ''; // Limpa o loader
+
+        noticias.forEach(noticia => {
+            const dataFormatada = noticia.data.toLocaleDateString('pt-MZ', { day: '2-digit', month: 'short', hour: '2-digit', minute:'2-digit' });
+            
+            feed.innerHTML += `
+                <article class="news-card" onclick="window.open('${noticia.link}', '_blank')">
+                    <img src="${noticia.imagem}" class="news-img" alt="Capa da notícia" loading="lazy">
+                    <div class="news-content">
+                        <span class="news-source">${noticia.fonte}</span>
+                        <h3 class="news-title">${noticia.titulo}</h3>
+                        <div class="news-footer">
+                            <span><i class="far fa-clock"></i> ${dataFormatada}</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </div>
+                    </div>
+                </article>
+            `;
+        });
+    }
+
+    // Inicia o carregamento
+    carregarNoticias();
+    
+    // Atualiza automaticamente a cada 15 minutos
+    setInterval(carregarNoticias, 900000); 
+</script>
+</body>
+</html>
