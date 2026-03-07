@@ -47,16 +47,16 @@
         .navbar { position: sticky; top: 0; background: var(--primary); color: white; z-index: 1000; box-shadow: 0 4px 12px rgba(204,0,0,0.2); }
         .nav-top { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 12px 20px; }
         .logo-area { display: flex; align-items: center; gap: 15px; }
-        .menu-toggle { background: none; border: none; font-size: 1.3rem; color: white; cursor: pointer; }
-        .logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.4rem; color: white; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; }
+        .menu-toggle { background: none; border: none; font-size: 1.2rem; color: white; cursor: pointer; }
         
-        /* Widget de Clima Topo Interativo */
-        .weather-widget { font-size: 0.8rem; font-weight: 600; background: rgba(0,0,0,0.2); padding: 5px 10px; border-radius: 4px; display: flex; align-items: center; gap: 5px; }
-        .weather-widget i { color: #facc15; }
-        .weather-select { background: transparent; border: none; color: white; font-family: inherit; font-weight: 600; outline: none; cursor: pointer; appearance: none; -webkit-appearance: none; padding-right: 5px; }
-        .weather-select option { color: var(--text); background: var(--card); }
+        /* LOGO REDUZIDO E ELEGANTE */
+        .logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.1rem; color: white; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; }
+        
+        /* BOTÃO MODO ESCURO TOPO */
+        .theme-btn-top { background: rgba(0,0,0,0.2); border: none; color: white; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: 0.2s; }
+        .theme-btn-top:hover { background: rgba(0,0,0,0.4); }
 
-        /* BARRA DE ÚLTIMA HORA (Sem "Destaque") */
+        /* BARRA DE ÚLTIMA HORA */
         .breaking-bar { background: var(--accent); color: white; padding: 8px 20px; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; overflow: hidden; white-space: nowrap; }
         .breaking-text { animation: scrollLeft 25s linear infinite; display: inline-block; padding-left: 100%; }
         @keyframes scrollLeft { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
@@ -68,7 +68,7 @@
         .sidebar.open { left: 0; }
         .sidebar-close { background: none; border: none; font-size: 1.4rem; color: var(--text); cursor: pointer; align-self: flex-end; }
         
-        .sidebar h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; color: var(--primary); margin-bottom: 25px; text-transform: uppercase; cursor: pointer;}
+        .sidebar h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; color: var(--primary); margin-bottom: 20px; text-transform: uppercase; cursor: pointer;}
         .side-btn { display: flex; align-items: center; gap: 12px; width: 100%; background: none; border: none; color: var(--text); padding: 12px 10px; font-size: 0.95rem; font-weight: 600; cursor: pointer; border-radius: 6px; transition: 0.2s; text-align: left; }
         .side-btn:hover, .side-btn.active { background: var(--surface); color: var(--primary); }
         .side-btn i { width: 18px; text-align: center; font-size: 1.1rem; }
@@ -76,6 +76,13 @@
         .i-dark { color: #475569; }
         .i-saved { color: var(--icon-save); }
         .i-new { color: #f59e0b; }
+        
+        /* CAIXA DE CLIMA NO MENU */
+        .weather-sidebar { margin-top: 15px; padding: 15px; background: var(--surface); border-radius: 8px; border: 1px solid var(--border); }
+        .weather-sidebar h3 { font-size: 0.85rem; color: var(--text-meta); text-transform: uppercase; margin-bottom: 10px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .weather-sidebar h3 i { color: #facc15; }
+        .weather-select { width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--border); background: var(--card); color: var(--text); font-weight: 600; margin-bottom: 10px; outline: none; }
+        #temp-display { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
         
         .sidebar-footer { margin-top: auto; padding-top: 15px; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--text-meta); line-height: 1.5; }
         .contact-link { color: var(--text); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; margin-top: 8px; }
@@ -151,13 +158,29 @@
     <h2 onclick="goHome()">Sua Notícia</h2>
 
     <button class="side-btn" onclick="goHome()"><i class="fas fa-home"></i> Início</button>
-    <button class="side-btn" onclick="toggleTheme()"><i class="fas fa-moon i-dark" id="theme-icon"></i> <span id="theme-text">Modo Escuro</span></button>
     <button class="side-btn" id="sidebar-saved-btn" onclick="toggleSavedView()"><i class="fas fa-bookmark i-saved"></i> Ler Mais Tarde</button>
     
-    <div style="margin-top: 25px; border-top: 1px solid var(--border); padding-top: 15px;">
+    <div style="margin-top: 15px; border-top: 1px solid var(--border); padding-top: 15px;">
         <p style="font-size: 0.75rem; color: var(--text-meta); text-transform: uppercase; margin-bottom: 8px; font-weight: 700;">Filtragem</p>
         <button class="side-btn active" id="btn-sort-new" onclick="setSort('new')"><i class="fas fa-bolt i-new"></i> Mais Recentes</button>
         <button class="side-btn" id="btn-sort-old" onclick="setSort('old')"><i class="fas fa-history i-dark"></i> Mais Antigas</button>
+    </div>
+
+    <div class="weather-sidebar">
+        <h3><i class="fas fa-cloud-sun"></i> Clima Agora</h3>
+        <select class="weather-select" id="city-select" onchange="loadWeather()">
+            <option value="-25.9653,32.5898">Maputo</option>
+            <option value="-15.1165,39.2666">Nampula</option>
+            <option value="-19.1164,33.4833">Chimoio</option>
+            <option value="-17.8786,36.8883">Quelimane</option>
+            <option value="-13.3128,35.2406">Lichinga (Niassa)</option>
+            <option value="-25.0519,33.6442">Xai-Xai (Gaza)</option>
+            <option value="-19.8436,34.8389">Beira (Sofala)</option>
+            <option value="-16.1564,33.5866">Tete</option>
+            <option value="-12.9739,40.5178">Pemba (Cabo Delgado)</option>
+            <option value="-23.8650,35.3833">Inhambane</option>
+        </select>
+        <div id="temp-display">--°C</div>
     </div>
     
     <div class="sidebar-footer">
@@ -175,21 +198,14 @@
                 <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
                 <div class="logo" onclick="goHome()">Sua Notícia</div>
             </div>
-            <div class="weather-widget">
-                <i class="fas fa-sun"></i> 
-                <select class="weather-select" id="city-select" onchange="loadWeather()">
-                    <option value="-25.9653,32.5898">Maputo</option>
-                    <option value="-19.8436,34.8389">Beira</option>
-                    <option value="-15.1165,39.2666">Nampula</option>
-                    <option value="-17.8786,36.8883">Quelimane</option>
-                </select>
-                <span id="temp-display">--°C</span>
-            </div>
+            <button class="theme-btn-top" onclick="toggleTheme()" title="Mudar Tema">
+                <i class="fas fa-moon" id="theme-icon-top"></i>
+            </button>
         </div>
     </nav>
     
     <div class="breaking-bar">
-        <div class="breaking-text" id="breaking-ticker">A carregar as atualizações mais recentes...</div>
+        <div class="breaking-text" id="breaking-ticker">A carregar as atualizações mais recentes de Moçambique...</div>
     </div>
     
     <div class="controls-container">
@@ -241,7 +257,7 @@
 </div>
 
 <script>
-// Lógica do Clima
+// Lógica do Clima no Sidebar
 async function loadWeather() {
     try {
         const [lat, lon] = document.getElementById('city-select').value.split(',');
@@ -258,17 +274,34 @@ window.addEventListener('scroll', () => {
     else { floatNav.classList.remove('visible'); }
 });
 
+// A LISTA COMPLETA DE FONTES
 const SOURCES = [
     { name: "O País", api: "https://opais.co.mz/wp-json/wp/v2/posts?_embed", slug: "opais" },
     { name: "Carta de MZ", api: "https://cartamz.com/wp-json/wp/v2/posts?_embed", slug: "carta" },
     { name: "MZ News", api: "https://mznews.co.mz/wp-json/wp/v2/posts?_embed", slug: "mznews" },
     { name: "Folha de Maputo", api: "https://www.folhademaputo.co.mz/wp-json/wp/v2/posts?_embed", slug: "folha" },
     { name: "Evidências", api: "https://evidencias.co.mz/wp-json/wp/v2/posts?_embed", slug: "evidencias" },
-    { name: "Integrity Mag", api: "https://integritymag.co.mz/wp-json/wp/v2/posts?_embed", slug: "integrity" },
-    { name: "Jornal Ikweli", api: "https://www.jornalikweli.co.mz/wp-json/wp/v2/posts?_embed", slug: "ikweli" },
-    { name: "Jornal Rigor", api: "https://jornalrigor.co.mz/wp-json/wp/v2/posts?_embed", slug: "rigor" },
-    { name: "Times de Todos", api: "https://www.timesdetodos.com/wp-json/wp/v2/posts?_embed", slug: "times" },
-    { name: "Mais de MZ", api: "https://mais.co.mz/wp-json/wp/v2/posts?_embed", slug: "mais" }
+    { name: "Integrity Mag", api: "https://integritymagazine.co.mz/wp-json/wp/v2/posts?_embed", slug: "integrity" },
+    { name: "Savana", api: "https://savana.co.mz/wp-json/wp/v2/posts?_embed", slug: "savana" },
+    { name: "Ngani", api: "https://ngani.co.mz/wp-json/wp/v2/posts?_embed", slug: "ngani" },
+    { name: "AIM News", api: "https://aimnews.org/wp-json/wp/v2/posts?_embed", slug: "aim" },
+    { name: "Jornal Ikweli", api: "https://ikweli.co.mz/wp-json/wp/v2/posts?_embed", slug: "ikweli" },
+    { name: "Zumbo FM", api: "https://zumbofm.com/wp-json/wp/v2/posts?_embed", slug: "zumbo" },
+    { name: "Moz24h", api: "https://moz24h.co.mz/wp-json/wp/v2/posts?_embed", slug: "moz24h" },
+    { name: "Jornal Domingo", api: "https://www.jornaldomingo.co.mz/wp-json/wp/v2/posts?_embed", slug: "domingo" },
+    { name: "Jornal Desafio", api: "https://www.jornaldesafio.co.mz/wp-json/wp/v2/posts?_embed", slug: "desafio" },
+    { name: "Jornal Notícias", api: "https://www.jornalnoticias.co.mz/wp-json/wp/v2/posts?_embed", slug: "noticias" },
+    { name: "Dossiers e Factos", api: "https://dossiersefactos.com/wp-json/wp/v2/posts?_embed", slug: "dossiers" },
+    { name: "Diário Económico", api: "https://www.diarioeconomico.co.mz/wp-json/wp/v2/posts?_embed", slug: "diario" },
+    { name: "O Económico", api: "https://www.oeconomico.com/wp-json/wp/v2/posts?_embed", slug: "oeconomico" },
+    { name: "CIP Moz", api: "https://www.cipmoz.org/wp-json/wp/v2/posts?_embed", slug: "cip" },
+    { name: "CDD Moz", api: "https://cddmoz.org/wp-json/wp/v2/posts?_embed", slug: "cdd" },
+    { name: "O Destaque", api: "https://odestaque.co.mz/wp-json/wp/v2/posts?_embed", slug: "destaque" },
+    { name: "Canal Moz", api: "https://canal.co.mz/wp-json/wp/v2/posts?_embed", slug: "canal" },
+    { name: "Moz Times", api: "https://moztimes.com/wp-json/wp/v2/posts?_embed", slug: "moztimes" },
+    { name: "Rádio Moçambique", api: "https://www.rm.co.mz/wp-json/wp/v2/posts?_embed", slug: "rm" },
+    { name: "Miramar", api: "https://miramar.co.mz/wp-json/wp/v2/posts?_embed", slug: "miramar" },
+    { name: "DW Moçambique", api: "https://www.dw.com/wp-json/wp/v2/posts?_embed", slug: "dw" }
 ];
 
 let allPosts = [], currentPage = 1, isFetching = false, currentCat = '', isSavedView = false, sortOrder = 'new';
@@ -281,8 +314,7 @@ function toggleSidebar() {
 
 function toggleTheme() {
     const isDark = document.body.classList.toggle('dark-mode');
-    document.getElementById('theme-icon').className = isDark ? 'fas fa-sun i-new' : 'fas fa-moon i-dark';
-    document.getElementById('theme-text').innerText = isDark ? 'Modo Claro' : 'Modo Escuro';
+    document.getElementById('theme-icon-top').className = isDark ? 'fas fa-sun' : 'fas fa-moon';
 }
 
 function setSort(order) {
@@ -333,15 +365,12 @@ async function loadNews() {
     const results = await Promise.all(fetchPromises);
     const newPosts = results.flat();
     
-    // Evita repetição
     newPosts.forEach(newP => {
         if(!allPosts.some(oldP => oldP.uniqueId === newP.uniqueId)) { allPosts.push(newP); }
     });
     
-    // Assegura ordenação por data imediatamente após carregar
     allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
     
-    // Passar as últimas 5 atualizações no Ticker
     if(allPosts.length > 0) {
         const top5 = allPosts.slice(0, 5).map(p => p.title).join(" &nbsp; • &nbsp; ");
         document.getElementById('breaking-ticker').innerHTML = top5;
