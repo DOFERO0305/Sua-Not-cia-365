@@ -2,134 +2,193 @@
 <html lang="pt-MZ">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sua Notícia 365 | Agregador Premium</title>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sua Notícia 365 | Moçambique Atualizado</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #0284c7; /* Azul Premium */
-            --bg: #f8fafc;
-            --surface: #ffffff;
-            --text: #0f172a;
-            --text-meta: #64748b;
-            --border: #e2e8f0;
+            --primary: #0284c7; /* Azul Premium para Notícias */
+            --bg: #fdfdfc;
+            --card: #ffffff;
+            --text: #111827;
+            --text-meta: #6b7280;
+            --border: #e5e7eb;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         }
-
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0f172a;
+                --card: #1e293b;
+                --text: #f3f4f6;
+                --text-meta: #9ca3af;
+                --border: #334155;
+            }
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); padding-bottom: 40px; }
         
-        /* Cabeçalho Premium */
-        header { background: var(--surface); padding: 20px 5%; border-bottom: 2px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
-        .logo { font-size: 1.8rem; font-weight: 800; letter-spacing: -1px; }
+        .navbar { position: sticky; top: 0; background: rgba(var(--bg), 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 1000; padding: 14px 20px; border-bottom: 1px solid var(--border); }
+        .nav-top { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+        .logo { font-weight: 800; font-size: 1.6rem; color: var(--text); text-decoration: none; letter-spacing: -1.5px; display: flex; align-items: center; gap: 8px; }
         .logo span { color: var(--primary); }
         
-        /* Grelha de Notícias */
-        .container { max-width: 1400px; margin: 30px auto; padding: 0 20px; }
-        .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
-        
-        /* Cartão de Notícia */
-        .news-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; cursor: pointer; }
-        .news-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-color: var(--primary); }
-        
-        .news-img { width: 100%; height: 200px; object-fit: cover; background: #e2e8f0; }
-        .news-content { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
-        .news-source { display: inline-block; background: #f1f5f9; color: var(--primary); padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; width: fit-content; }
-        .news-title { font-family: 'Merriweather', serif; font-size: 1.1rem; line-height: 1.5; margin: 0 0 15px 0; color: var(--text); }
-        .news-footer { margin-top: auto; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--text-meta); border-top: 1px solid var(--border); padding-top: 15px; }
-        
-        .loader { text-align: center; padding: 40px; color: var(--primary); font-size: 2rem; grid-column: 1 / -1; }
+        .btn-saved { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 8px 16px; border-radius: var(--radius-md); font-weight: 600; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
+        .btn-saved.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .search-bar { margin: 16px auto; max-width: 800px; position: relative; }
+        .search-bar input { width: 100%; padding: 14px 18px 14px 48px; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--card); color: var(--text); font-family: inherit; box-shadow: var(--shadow-sm); }
+        .search-bar i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-meta); }
+
+        .categories { display: flex; gap: 10px; overflow-x: auto; padding: 10px 0; scrollbar-width: none; max-width: 1200px; margin: 0 auto; }
+        .categories::-webkit-scrollbar { display: none; }
+        .cat-item { padding: 10px 20px; background: var(--card); border: 1px solid var(--border); border-radius: 100px; font-size: 0.85rem; font-weight: 700; color: var(--text); white-space: nowrap; cursor: pointer; transition: 0.2s; }
+        .cat-item.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+        .feed { padding: 20px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
+        .news-card { display: flex; flex-direction: column; background: var(--card); border-radius: var(--radius-lg); border: 1px solid var(--border); text-decoration: none; color: inherit; overflow: hidden; transition: 0.3s; box-shadow: var(--shadow-sm); }
+        .news-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        .news-img { width: 100%; height: 200px; object-fit: cover; background: #eee; }
+        .news-body { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+        .news-tag { font-size: 0.75rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 10px; }
+        .news-title { font-size: 1.1rem; font-weight: 700; line-height: 1.4; margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .news-meta { font-size: 0.8rem; color: var(--text-meta); margin-top: auto; }
+
+        .loader { text-align: center; padding: 50px; grid-column: 1/-1; color: var(--primary); font-size: 1.8rem; }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="logo">Sua Notícia <span>365</span></div>
-    <div style="font-weight: 600; color: var(--text-meta);"><i class="fas fa-sync fa-spin" id="sync-icon" style="display:none;"></i> Atualizado ao minuto</div>
-</header>
-
-<div class="container">
-    <div class="news-grid" id="news-feed">
-        <div class="loader" id="loader"><i class="fas fa-circle-notch fa-spin"></i> A carregar notícias...</div>
+<nav class="navbar">
+    <div class="nav-top">
+        <a href="index.html" class="logo">Sua Notícia <span>365</span></a>
+        <button id="bookmark-btn" class="btn-saved" onclick="toggleSavedView()"><i class="far fa-bookmark"></i> Salvos</button>
     </div>
-</div>
+    <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" id="search-input" placeholder="Pesquisar em 22 jornais..." onkeyup="if(event.key==='Enter') resetAndLoad()">
+    </div>
+    <div class="categories">
+        <div class="cat-item active" onclick="filterCat('', this)">Recentíssimas</div>
+        <div class="cat-item" onclick="filterCat('política', this)">Política</div>
+        <div class="cat-item" onclick="filterCat('economia', this)">Economia</div>
+        <div class="cat-item" onclick="filterCat('sociedade', this)">Sociedade</div>
+        <div class="cat-item" onclick="filterCat('desporto', this)">Desporto</div>
+    </div>
+</nav>
+
+<main class="feed" id="feed"></main>
+<div id="scroll-anchor" class="loader"><i class="fas fa-circle-notch fa-spin"></i> A processar jornais...</div>
 
 <script>
-    // Dicionário com as nossas primeiras fontes para testar o motor
-    const FONTES_RSS = [
-        { nome: 'O País', url: 'https://opais.co.mz/feed/' },
-        { nome: 'Carta de Moçambique', url: 'https://cartamz.com/feed/' },
-        { nome: 'Mz News', url: 'https://mznews.co.mz/feed/' }
-    ];
+// A nossa lista de experiência com os 22 jornais
+const SOURCES = [
+    { name: "O País", api: "https://opais.co.mz/wp-json/wp/v2/posts?_embed", slug: "opais" },
+    { name: "Carta de MZ", api: "https://cartamz.com/wp-json/wp/v2/posts?_embed", slug: "carta" },
+    { name: "MZ News", api: "https://mznews.co.mz/wp-json/wp/v2/posts?_embed", slug: "mznews" },
+    { name: "Folha de Maputo", api: "https://www.folhademaputo.co.mz/wp-json/wp/v2/posts?_embed", slug: "folha" },
+    { name: "Evidências", api: "https://evidencias.co.mz/wp-json/wp/v2/posts?_embed", slug: "evidencias" },
+    { name: "Integrity", api: "https://integritymag.co.mz/wp-json/wp/v2/posts?_embed", slug: "integrity" },
+    { name: "Mais de MZ", api: "https://mais.co.mz/wp-json/wp/v2/posts?_embed", slug: "mais" },
+    { name: "Jornal Ikweli", api: "https://www.jornalikweli.co.mz/wp-json/wp/v2/posts?_embed", slug: "ikweli" },
+    { name: "Mozambique Times", api: "https://mozambiquetimes.co.mz/wp-json/wp/v2/posts?_embed", slug: "moztimes" },
+    { name: "MMO Notícias", api: "https://noticias.mmo.co.mz/wp-json/wp/v2/posts?_embed", slug: "mmo" },
+    { name: "Times de Todos", api: "https://www.timesdetodos.com/wp-json/wp/v2/posts?_embed", slug: "timesdetodos" },
+    { name: "O Destaque", api: "https://odestaque.co.mz/wp-json/wp/v2/posts?_embed", slug: "odestaque" },
+    { name: "Jornal Domingo", api: "https://www.jornaldomingo.co.mz/wp-json/wp/v2/posts?_embed", slug: "domingo" },
+    { name: "Jornal Notícias", api: "https://www.jornalnoticias.co.mz/wp-json/wp/v2/posts?_embed", slug: "noticias" },
+    { name: "Jornal Desafio", api: "https://www.jornaldesafio.co.mz/wp-json/wp/v2/posts?_embed", slug: "desafio" },
+    { name: "CIP MZ", api: "https://cipmoz.org/wp-json/wp/v2/posts?_embed", slug: "cip" },
+    { name: "CDD MZ", api: "https://cddmoz.org/wp-json/wp/v2/posts?_embed", slug: "cdd" },
+    { name: "Dossiers e Factos", api: "https://dossiersefactos.co.mz/wp-json/wp/v2/posts?_embed", slug: "dossiers" },
+    { name: "Canal de MZ", api: "https://canaldemoz.co.mz/wp-json/wp/v2/posts?_embed", slug: "canal" },
+    { name: "Jornal Rigor", api: "https://jornalrigor.co.mz/wp-json/wp/v2/posts?_embed", slug: "rigor" },
+    { name: "SAVANA", api: "https://savana.co.mz/wp-json/wp/v2/posts?_embed", slug: "savana" },
+    { name: "AIM", api: "https://aim.org.mz/wp-json/wp/v2/posts?_embed", slug: "aim" },
+    { name: "NGANI", api: "https://ngani.co.mz/wp-json/wp/v2/posts?_embed", slug: "ngani" }
+];
 
-    const RSS2JSON_API = 'https://api.rss2json.com/v1/api.json?rss_url=';
+let allPosts = [], currentPage = 1, isFetching = false, currentCat = '', isSavedView = false;
 
-    // Função para extrair imagem do conteúdo se a API não enviar uma miniatura
-    function extrairImagem(conteudo) {
-        const div = document.createElement('div');
-        div.innerHTML = conteudo;
-        const img = div.querySelector('img');
-        return img ? img.src : 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?q=80&w=800&auto=format&fit=crop'; // Imagem padrão
-    }
-
-    async function carregarNoticias() {
-        document.getElementById('sync-icon').style.display = 'inline-block';
-        let todasNoticias = [];
-
-        for (const fonte of FONTES_RSS) {
-            try {
-                const resposta = await fetch(RSS2JSON_API + encodeURIComponent(fonte.url));
-                const dados = await resposta.json();
-                
-                if (dados.status === 'ok') {
-                    // Pega as 5 notícias mais recentes de cada jornal
-                    const artigos = dados.items.slice(0, 5).map(item => ({
-                        titulo: item.title,
-                        link: item.link,
-                        data: new Date(item.pubDate),
-                        imagem: item.thumbnail || extrairImagem(item.description || item.content),
-                        fonte: fonte.nome
-                    }));
-                    todasNoticias = [...todasNoticias, ...artigos];
-                }
-            } catch (erro) {
-                console.error(`Falha ao carregar ${fonte.nome}`);
-            }
-        }
-
-        // Organiza todas as notícias das mais recentes para as mais antigas
-        todasNoticias.sort((a, b) => b.data - a.data);
-        renderizarNoticias(todasNoticias);
-        document.getElementById('sync-icon').style.display = 'none';
-    }
-
-    function renderizarNoticias(noticias) {
-        const feed = document.getElementById('news-feed');
-        feed.innerHTML = ''; // Limpa o loader
-
-        noticias.forEach(noticia => {
-            const dataFormatada = noticia.data.toLocaleDateString('pt-MZ', { day: '2-digit', month: 'short', hour: '2-digit', minute:'2-digit' });
-            
-            feed.innerHTML += `
-                <article class="news-card" onclick="window.open('${noticia.link}', '_blank')">
-                    <img src="${noticia.imagem}" class="news-img" alt="Capa da notícia" loading="lazy">
-                    <div class="news-content">
-                        <span class="news-source">${noticia.fonte}</span>
-                        <h3 class="news-title">${noticia.titulo}</h3>
-                        <div class="news-footer">
-                            <span><i class="far fa-clock"></i> ${dataFormatada}</span>
-                            <i class="fas fa-external-link-alt"></i>
-                        </div>
-                    </div>
-                </article>
-            `;
-        });
-    }
-
-    // Inicia o carregamento
-    carregarNoticias();
+async function loadNews() {
+    if (isFetching || isSavedView) return;
+    isFetching = true;
     
-    // Atualiza automaticamente a cada 15 minutos
-    setInterval(carregarNoticias, 900000); 
+    const searchVal = document.getElementById('search-input').value;
+    const query = currentCat || searchVal;
+
+    // Dispara 22 pedidos em simultâneo!
+    const fetchPromises = SOURCES.map(async (src) => {
+        try {
+            let url = `${src.api}&per_page=3&page=${currentPage}`;
+            if (query) url += `&search=${encodeURIComponent(query)}`;
+            const res = await fetch(url);
+            
+            // Se o site não suportar esta API, vai falhar aqui
+            if (!res.ok) throw new Error('Falha na API'); 
+            
+            const data = await res.json();
+            return data.map(p => ({
+                id: p.id, title: p.title.rendered, date: p.date, 
+                srcName: src.name, srcSlug: src.slug,
+                img: p._embedded?.['wp:featuredmedia']?.[0]?.source_url || 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?q=80&w=600',
+                link: `artigo.html?id=${p.id}&src=${src.slug}`
+            }));
+        } catch (e) { 
+            console.log(`Site não respondeu ou não usa WP-JSON: ${src.name}`);
+            return []; // Retorna vazio se der erro, para não quebrar o resto
+        }
+    });
+
+    const results = await Promise.all(fetchPromises);
+    const newPosts = results.flat().sort((a, b) => new Date(b.date) - new Date(a.date));
+    allPosts = [...allPosts, ...newPosts];
+    renderFeed();
+    isFetching = false;
+    currentPage++;
+}
+
+function renderFeed() {
+    const feed = document.getElementById('feed');
+    if(currentPage === 1) feed.innerHTML = '';
+    const displayList = isSavedView ? JSON.parse(localStorage.getItem('cld_saved') || '[]') : allPosts;
+    
+    displayList.forEach(p => {
+        const card = document.createElement('a');
+        card.className = 'news-card';
+        card.href = p.link;
+        card.innerHTML = `
+            <img class="news-img" src="${p.img}" loading="lazy">
+            <div class="news-body">
+                <span class="news-tag">${p.srcName}</span>
+                <h3 class="news-title">${p.title}</h3>
+                <div class="news-meta"><span>${new Date(p.date).toLocaleDateString()}</span></div>
+            </div>`;
+        feed.appendChild(card);
+    });
+}
+
+function filterCat(cat, btn) {
+    document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
+    btn.classList.add('active');
+    currentCat = cat;
+    isSavedView = false;
+    resetAndLoad();
+}
+
+function toggleSavedView() {
+    isSavedView = !isSavedView;
+    document.getElementById('bookmark-btn').classList.toggle('active', isSavedView);
+    document.getElementById('scroll-anchor').style.display = isSavedView ? 'none' : 'block';
+    renderFeed();
+}
+
+function resetAndLoad() { allPosts = []; currentPage = 1; loadNews(); }
+const observer = new IntersectionObserver(e => e[0].isIntersecting && loadNews());
+observer.observe(document.getElementById('scroll-anchor'));
+window.onload = loadNews;
 </script>
 </body>
 </html>
