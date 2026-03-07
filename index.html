@@ -3,135 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sua Notícia 365 | Moçambique</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <title>Sua Notícia 365 | Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            /* Tema Vermelho */
-            --primary: #dc2626; 
-            --primary-dark: #991b1b;
+            /* Tema Premium Vermelho Escuro */
+            --primary: #b91c1c; 
+            --primary-hover: #991b1b;
+            --accent: #facc15; /* Amarelo para destaques */
             
-            /* Cores Modo Claro (Padrão) */
-            --bg: #fdfdfc;
+            /* Cores Modo Claro */
+            --bg: #f4f6f8;
             --card: #ffffff;
-            --text: #111827;
-            --text-meta: #6b7280;
-            --border: #e5e7eb;
-            --surface: #f3f4f6;
-            --radius-lg: 16px;
-            --radius-md: 12px;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --text: #0f172a;
+            --text-meta: #64748b;
+            --border: #e2e8f0;
+            --surface: #f8fafc;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
 
-        /* Cores Modo Escuro */
         body.dark-mode {
             --bg: #0f172a;
             --card: #1e293b;
-            --text: #f3f4f6;
-            --text-meta: #9ca3af;
+            --text: #f8fafc;
+            --text-meta: #94a3b8;
             --border: #334155;
             --surface: #0f172a;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); padding-bottom: 40px; transition: background 0.3s, color 0.3s; }
         
-        /* MENU LATERAL (SIDEBAR) */
-        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1999; display: none; opacity: 0; transition: 0.3s; }
-        .sidebar-overlay.open { display: block; opacity: 1; }
-        .sidebar { position: fixed; top: 0; left: -300px; width: 280px; height: 100vh; background: var(--card); z-index: 2000; transition: left 0.3s ease; padding: 20px; border-right: 1px solid var(--border); overflow-y: auto; }
-        .sidebar.open { left: 0; }
-        .sidebar-close { background: none; border: none; font-size: 1.5rem; color: var(--text); cursor: pointer; float: right; }
-        .sidebar h2 { margin-top: 10px; font-size: 1.5rem; font-weight: 800; color: var(--text); }
-        .sidebar h2 span { color: var(--primary); }
-        .sidebar-section { margin-top: 30px; }
-        .sidebar-section h3 { font-size: 0.85rem; color: var(--text-meta); text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
-        .side-btn { display: flex; align-items: center; gap: 10px; width: 100%; background: none; border: none; color: var(--text); padding: 12px 10px; font-size: 1rem; font-weight: 600; cursor: pointer; border-radius: 8px; transition: 0.2s; text-align: left; }
-        .side-btn:hover, .side-btn.active { background: var(--surface); color: var(--primary); }
+        /* SCROLLBAR PREMIUM */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
-        /* NAVEGAÇÃO TOPO */
-        .navbar { position: sticky; top: 0; background: rgba(var(--bg), 0.95); backdrop-filter: blur(15px); z-index: 1000; padding: 14px 20px; border-bottom: 1px solid var(--border); }
+        /* HEADER & NAVBAR (Glassmorphism) */
+        .navbar { position: sticky; top: 0; background: rgba(var(--bg), 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); z-index: 1000; padding: 15px 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
         .nav-top { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
         .logo-area { display: flex; align-items: center; gap: 15px; }
         .menu-toggle { background: none; border: none; font-size: 1.5rem; color: var(--text); cursor: pointer; }
-        .logo { font-weight: 800; font-size: 1.6rem; color: var(--text); text-decoration: none; letter-spacing: -1px; cursor: pointer; }
+        .logo { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.8rem; color: var(--text); text-decoration: none; letter-spacing: -0.5px; }
         .logo span { color: var(--primary); }
+        
+        /* Widget de Meteorologia */
+        .weather-widget { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600; color: var(--text-meta); background: var(--card); padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border); }
+        .weather-widget i { color: #f59e0b; }
 
-        /* FEED E PESQUISA */
-        #home-view { display: block; }
-        .search-bar { margin: 16px auto; max-width: 800px; position: relative; padding: 0 20px; }
-        .search-bar input { width: 100%; padding: 14px 18px 14px 48px; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--card); color: var(--text); font-family: inherit; }
-        .search-bar i { position: absolute; left: 38px; top: 50%; transform: translateY(-50%); color: var(--text-meta); }
+        /* MENU LATERAL PREMIUM */
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(3px); z-index: 1999; display: none; opacity: 0; transition: 0.3s; }
+        .sidebar-overlay.open { display: block; opacity: 1; }
+        .sidebar { position: fixed; top: 0; left: -320px; width: 300px; height: 100vh; background: var(--card); z-index: 2000; transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1); padding: 25px; border-right: 1px solid var(--border); overflow-y: auto; box-shadow: var(--shadow); display: flex; flex-direction: column; }
+        .sidebar.open { left: 0; }
+        .sidebar-close { background: var(--surface); border: 1px solid var(--border); width: 36px; height: 36px; border-radius: 50%; color: var(--text); cursor: pointer; float: right; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .sidebar-close:hover { background: var(--primary); color: white; border-color: var(--primary); }
         
-        .categories { display: flex; gap: 10px; overflow-x: auto; padding: 10px 20px; scrollbar-width: none; max-width: 1200px; margin: 0 auto; }
-        .categories::-webkit-scrollbar { display: none; }
-        .cat-item { padding: 8px 18px; background: var(--card); border: 1px solid var(--border); border-radius: 100px; font-size: 0.85rem; font-weight: 700; white-space: nowrap; cursor: pointer; transition: 0.2s; }
-        .cat-item.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+        .sidebar-content { flex-grow: 1; }
+        .sidebar h2 { margin-top: 5px; font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--text); margin-bottom: 30px; }
+        .sidebar h2 span { color: var(--primary); }
+        .side-btn { display: flex; align-items: center; gap: 12px; width: 100%; background: none; border: none; color: var(--text); padding: 14px 15px; font-size: 1rem; font-weight: 600; cursor: pointer; border-radius: 10px; transition: 0.2s; text-align: left; margin-bottom: 5px; }
+        .side-btn:hover, .side-btn.active { background: rgba(185, 28, 28, 0.08); color: var(--primary); }
+        .side-btn i { width: 20px; text-align: center; }
         
-        .feed { padding: 20px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; min-height: 50vh; }
-        .news-card { background: var(--card); border-radius: var(--radius-lg); border: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; cursor: pointer; transition: transform 0.2s; }
-        .news-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
-        .news-img { width: 100%; height: 200px; object-fit: cover; background: var(--surface); }
-        .news-body { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
-        .news-tag { font-size: 0.75rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 10px; }
-        .news-title { font-size: 1.1rem; font-weight: 700; line-height: 1.4; margin-bottom: 15px; }
-        .news-meta { font-size: 0.8rem; color: var(--text-meta); margin-top: auto; }
+        /* Contactos no Menu Lateral */
+        .sidebar-footer { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--text-meta); line-height: 1.6; }
+        .contact-link { color: var(--text); text-decoration: none; font-weight: 600; display: block; margin-top: 5px; }
+        .contact-link i { color: var(--primary); width: 15px; }
 
-        /* LEITURA DE ARTIGO */
-        #article-view { display: none; background: var(--bg); min-height: 100vh; }
-        .article-header { position: sticky; top: 0; width: 100%; background: rgba(var(--bg), 0.9); backdrop-filter: blur(12px); padding: 15px 25px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; z-index: 100; }
-        .back-btn { background: none; border: none; font-size: 1.1rem; color: var(--text); font-weight: 700; display: flex; align-items: center; gap: 8px; cursor: pointer; font-family: inherit; }
+        /* PESQUISA E CATEGORIAS */
+        .top-bar-controls { max-width: 1200px; margin: 20px auto; padding: 0 20px; display: flex; flex-direction: column; gap: 15px; }
+        .search-container { position: relative; width: 100%; max-width: 600px; margin: 0 auto; }
+        .search-container input { width: 100%; padding: 16px 20px 16px 50px; border-radius: 100px; border: 1px solid var(--border); background: var(--card); color: var(--text); font-family: inherit; font-size: 1rem; box-shadow: var(--shadow); outline: none; transition: border-color 0.2s; }
+        .search-container input:focus { border-color: var(--primary); }
+        .search-container i { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--text-meta); font-size: 1.1rem; }
         
-        .article-container { max-width: 740px; margin: 30px auto 0; padding: 20px; }
-        .source-label { color: var(--primary); font-weight: 800; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.1em; margin-bottom: 15px; display: inline-block; background: rgba(220, 38, 38, 0.1); padding: 5px 12px; border-radius: 6px; }
-        .article-title { font-size: 2.2rem; font-weight: 800; line-height: 1.2; margin-bottom: 25px; letter-spacing: -1px; }
+        .categories { display: flex; gap: 10px; overflow-x: auto; padding: 5px 0; scrollbar-width: none; justify-content: center; }
+        .cat-item { padding: 10px 24px; background: var(--card); border: 1px solid var(--border); border-radius: 100px; font-size: 0.9rem; font-weight: 700; white-space: nowrap; cursor: pointer; transition: 0.2s; color: var(--text-meta); }
+        .cat-item:hover { border-color: var(--primary); color: var(--primary); }
+        .cat-item.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* GRELHA DE NOTÍCIAS PREMIUM */
+        .feed { padding: 20px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 30px; min-height: 50vh; }
+        .news-card { background: var(--card); border-radius: var(--radius-lg); border: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; cursor: pointer; transition: all 0.3s ease; box-shadow: var(--shadow); position: relative; }
+        .news-card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); border-color: var(--primary); }
+        .news-img { width: 100%; height: 220px; object-fit: cover; background: var(--surface); border-bottom: 1px solid var(--border); }
+        .news-body { padding: 25px; display: flex; flex-direction: column; flex-grow: 1; }
+        .news-tag { display: inline-block; background: rgba(185, 28, 28, 0.1); color: var(--primary); padding: 4px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; width: fit-content; letter-spacing: 0.5px; }
+        .news-title { font-size: 1.25rem; font-weight: 800; line-height: 1.4; margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; color: var(--text); }
+        .news-meta { font-size: 0.85rem; color: var(--text-meta); margin-top: auto; display: flex; align-items: center; gap: 6px; font-weight: 500; }
+
+        /* VISTA DE LEITURA DO ARTIGO */
+        #article-view { display: none; background: var(--bg); min-height: 100vh; padding-bottom: 80px; }
+        .article-header { position: sticky; top: 0; width: 100%; background: rgba(var(--bg), 0.95); backdrop-filter: blur(12px); padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        .back-btn { background: var(--card); border: 1px solid var(--border); padding: 8px 16px; border-radius: 100px; font-size: 1rem; color: var(--text); font-weight: 700; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: 0.2s; }
+        .back-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
         
-        /* Botões de Ação Profissionais */
-        .btn-action-row { display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
-        .btn-action { flex: 1; min-width: 120px; border: 1px solid var(--border); padding: 12px; border-radius: 10px; font-weight: 700; cursor: pointer; background: var(--card); color: var(--text); font-family: inherit; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-action:hover { background: var(--surface); }
+        .article-container { max-width: 800px; margin: 40px auto 0; padding: 0 20px; }
+        .article-title { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 700; line-height: 1.2; margin-bottom: 30px; color: var(--text); }
+        
+        /* Botões de Ação do Artigo */
+        .btn-action-row { display: flex; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+        .btn-action { flex: 1; min-width: 140px; border: 1px solid var(--border); padding: 14px; border-radius: 12px; font-weight: 700; cursor: pointer; background: var(--card); color: var(--text); font-family: inherit; font-size: 0.95rem; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .btn-action:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); }
         .btn-action.saved { background: var(--primary); color: white; border-color: var(--primary); }
-        .btn-action.liked { color: #e11d48; border-color: #e11d48; background: rgba(225, 29, 72, 0.1); }
+        .btn-action.liked { color: #e11d48; border-color: #e11d48; background: rgba(225, 29, 72, 0.05); }
 
-        .article-main-img { width: 100%; border-radius: var(--radius-lg); margin-bottom: 30px; object-fit: cover; }
-        .article-content { font-family: 'Lora', serif; font-size: 1.25rem; line-height: 1.8; color: var(--text); }
-        .article-content img { max-width: 100%; height: auto; border-radius: var(--radius-md); margin: 20px 0; }
-        .article-content p { margin-bottom: 1.5rem; }
+        .article-main-img { width: 100%; border-radius: var(--radius-lg); margin-bottom: 40px; object-fit: cover; box-shadow: var(--shadow); max-height: 450px; }
+        
+        /* Tipografia Premium para o texto */
+        .article-content { font-size: 1.15rem; line-height: 1.9; color: var(--text); }
+        .article-content p { margin-bottom: 1.8rem; }
+        .article-content h2, .article-content h3 { margin: 2.5rem 0 1rem; font-family: 'Playfair Display', serif; }
+        .article-content img { max-width: 100%; height: auto; border-radius: var(--radius-md); margin: 30px 0; box-shadow: var(--shadow); }
+        .article-content a { color: var(--primary); text-decoration: none; font-weight: 600; }
         
         /* Secção Relacionados */
-        .related-section { margin-top: 50px; border-top: 2px solid var(--border); padding-top: 30px; }
-        .related-section h3 { font-size: 1.4rem; font-weight: 800; margin-bottom: 20px; }
-        .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
-        .related-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; cursor: pointer; display: flex; flex-direction: column; }
-        .related-card img { width: 100%; height: 120px; object-fit: cover; }
-        .related-card h4 { padding: 12px; font-size: 0.95rem; line-height: 1.3; font-weight: 700; }
+        .related-section { margin-top: 60px; padding-top: 40px; border-top: 2px solid var(--border); }
+        .related-section h3 { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; margin-bottom: 25px; }
+        .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+        .related-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; }
+        .related-card:hover { border-color: var(--primary); transform: translateY(-4px); }
+        .related-card img { width: 100%; height: 140px; object-fit: cover; border-bottom: 1px solid var(--border); }
+        .related-card h4 { padding: 15px; font-size: 1rem; line-height: 1.4; font-weight: 700; color: var(--text); }
 
-        footer { margin-top: 60px; padding: 40px 20px; text-align: center; border-top: 1px solid var(--border); font-size: 0.95rem; color: var(--text-meta); line-height: 1.6; }
-        .loader { text-align: center; padding: 40px; grid-column: 1/-1; color: var(--primary); font-size: 1.8rem; }
+        /* Rodapés */
+        .main-footer { margin-top: 80px; padding: 50px 20px; text-align: center; border-top: 1px solid var(--border); background: var(--card); }
+        .main-footer h4 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--text); margin-bottom: 15px; }
+        .main-footer p { color: var(--text-meta); font-size: 0.95rem; line-height: 1.8; margin-bottom: 20px; }
+        .footer-contacts { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .footer-contacts a { color: var(--primary); text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 8px; background: rgba(185, 28, 28, 0.05); padding: 10px 20px; border-radius: 100px; }
+        
+        .loader { text-align: center; padding: 60px; grid-column: 1/-1; color: var(--primary); font-size: 2rem; }
     </style>
 </head>
 <body>
 
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 <div class="sidebar" id="sidebar">
-    <button class="sidebar-close" onclick="toggleSidebar()"><i class="fas fa-times"></i></button>
-    <h2>Sua Notícia <span>365</span></h2>
+    <div class="sidebar-content">
+        <button class="sidebar-close" onclick="toggleSidebar()"><i class="fas fa-times"></i></button>
+        <h2>Sua Notícia<br><span>365</span></h2>
 
-    <div class="sidebar-section">
-        <h3><i class="fas fa-cog"></i> Configurações</h3>
-        <button class="side-btn" onclick="toggleTheme()"><i class="fas fa-moon" id="theme-icon"></i> Modo Escuro</button>
-    </div>
-
-    <div class="sidebar-section">
-        <h3><i class="fas fa-sort"></i> Ordenar Notícias</h3>
-        <button class="side-btn active" id="btn-sort-new" onclick="setSort('new')"><i class="fas fa-clock"></i> Mais Recentes</button>
-        <button class="side-btn" id="btn-sort-old" onclick="setSort('old')"><i class="fas fa-history"></i> Mais Antigas</button>
-    </div>
-
-    <div class="sidebar-section">
-        <h3><i class="fas fa-folder"></i> A Minha Área</h3>
+        <button class="side-btn" onclick="toggleTheme()"><i class="fas fa-moon" id="theme-icon"></i> <span id="theme-text">Modo Escuro</span></button>
         <button class="side-btn" id="sidebar-saved-btn" onclick="toggleSavedView()"><i class="fas fa-bookmark"></i> Ler Mais Tarde</button>
+        
+        <div style="margin-top: 30px; border-top: 1px solid var(--border); padding-top: 20px;">
+            <p style="font-size: 0.8rem; color: var(--text-meta); text-transform: uppercase; margin-bottom: 10px; font-weight: 700;">Ordenar Por</p>
+            <button class="side-btn active" id="btn-sort-new" onclick="setSort('new')"><i class="fas fa-sort-amount-down"></i> Mais Recentes</button>
+            <button class="side-btn" id="btn-sort-old" onclick="setSort('old')"><i class="fas fa-sort-amount-up"></i> Mais Antigas</button>
+        </div>
+    </div>
+    
+    <div class="sidebar-footer">
+        <strong>&copy; Sua Notícia 365</strong><br>
+        Criado por Donaldo F. Rodrigues<br><br>
+        <a href="https://wa.me/258849085157" class="contact-link" target="_blank"><i class="fas fa-phone-alt"></i> +258 84 908 5157</a>
+        <a href="mailto:donald.fer.fer@gmail.com" class="contact-link"><i class="fas fa-envelope"></i> donald.fer.fer@gmail.com</a>
     </div>
 </div>
 
@@ -140,59 +171,81 @@
         <div class="nav-top">
             <div class="logo-area">
                 <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-                <div class="logo" onclick="resetAndLoad()">Sua Notícia<span>365</span></div>
+                <div class="logo" onclick="resetAndLoad()">Sua Notícia <span>365</span></div>
+            </div>
+            <div class="weather-widget" id="weather-widget">
+                <i class="fas fa-spinner fa-spin"></i> Maputo
             </div>
         </div>
     </nav>
     
-    <div class="search-bar">
-        <i class="fas fa-search"></i>
-        <input type="text" id="search-input" placeholder="Pesquisar em todos os jornais..." onkeyup="if(event.key==='Enter') resetAndLoad()">
-    </div>
-    <div class="categories">
-        <div class="cat-item active" onclick="filterCat('', this)">Todas</div>
-        <div class="cat-item" onclick="filterCat('política', this)">Política</div>
-        <div class="cat-item" onclick="filterCat('economia', this)">Economia</div>
-        <div class="cat-item" onclick="filterCat('sociedade', this)">Sociedade</div>
-        <div class="cat-item" onclick="filterCat('desporto', this)">Desporto</div>
+    <div class="top-bar-controls">
+        <div class="search-container">
+            <i class="fas fa-search"></i>
+            <input type="text" id="search-input" placeholder="Pesquisar notícias, política, desporto..." onkeyup="if(event.key==='Enter') resetAndLoad()">
+        </div>
+        <div class="categories">
+            <div class="cat-item active" onclick="filterCat('', this)">Todas as Notícias</div>
+            <div class="cat-item" onclick="filterCat('política', this)">Política</div>
+            <div class="cat-item" onclick="filterCat('economia', this)">Economia</div>
+            <div class="cat-item" onclick="filterCat('sociedade', this)">Sociedade</div>
+            <div class="cat-item" onclick="filterCat('desporto', this)">Desporto</div>
+        </div>
     </div>
 
     <main class="feed" id="feed"></main>
-    <div id="scroll-anchor" class="loader"><i class="fas fa-circle-notch fa-spin"></i> A processar jornais...</div>
+    <div id="scroll-anchor" class="loader"><i class="fas fa-circle-notch fa-spin"></i></div>
+    
+    <footer class="main-footer">
+        <h4>Sua Notícia 365</h4>
+        <p>O seu agregador premium de informação. Todas as notícias de Moçambique num só lugar.<br>Criado por Donaldo Fernando Rodrigues.</p>
+        <div class="footer-contacts">
+            <a href="https://wa.me/258849085157" target="_blank"><i class="fas fa-phone-alt"></i> +258 84 908 5157</a>
+            <a href="mailto:donald.fer.fer@gmail.com"><i class="fas fa-envelope"></i> donald.fer.fer@gmail.com</a>
+        </div>
+    </footer>
 </div>
 
 <div id="article-view">
     <div class="article-header">
-        <button class="back-btn" onclick="closeArticle()"><i class="fas fa-arrow-left"></i> Voltar</button>
+        <button class="back-btn" onclick="closeArticle()"><i class="fas fa-arrow-left"></i> Voltar às Notícias</button>
     </div>
 
     <main class="article-container">
-        <div id="source-tag" class="source-label">...</div>
-        <h1 id="article-title">...</h1>
+        <div id="source-tag" class="news-tag">...</div>
+        <h1 id="article-title" class="article-title">...</h1>
         
         <div class="btn-action-row">
+            <button id="btn-save" class="btn-action" onclick="toggleSaveArticle()"><i class="far fa-bookmark"></i> Guardar para ler depois</button>
             <button id="btn-like" class="btn-action" onclick="toggleLike()"><i class="far fa-heart"></i> Adorar</button>
-            <button id="btn-save" class="btn-action" onclick="toggleSaveArticle()"><i class="far fa-bookmark"></i> Guardar</button>
-            <button class="btn-action" onclick="shareArticle()"><i class="fas fa-share-alt"></i> Partilhar</button>
+            <button class="btn-action" onclick="shareArticle()"><i class="fas fa-share-alt"></i> Partilhar com amigos</button>
         </div>
 
         <img id="feat-img" class="article-main-img" src="" style="display:none">
         <div id="article-content" class="article-content"><i class="fas fa-spinner fa-spin"></i> A carregar texto completo...</div>
         
         <div class="related-section" id="related-section" style="display:none;">
-            <h3>Notícias Relacionadas</h3>
+            <h3>Leia também no mesmo jornal</h3>
             <div class="related-grid" id="related-grid"></div>
         </div>
-
-        <footer>
-            <strong>Sua Notícia 365</strong><br>
-            Feito por Donaldo Fernando Rodrigues
-        </footer>
     </main>
 </div>
 
 <script>
-// LISTA DE FONTES (Mantemos todas, as que falharem não quebram o site)
+// A Magia da Meteorologia (Open-Meteo API)
+async function loadWeather() {
+    try {
+        // Coordenadas de Maputo
+        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=-25.9653&longitude=32.5898&current_weather=true');
+        const data = await res.json();
+        const temp = Math.round(data.current_weather.temperature);
+        document.getElementById('weather-widget').innerHTML = `<i class="fas fa-sun"></i> Maputo: ${temp}°C`;
+    } catch(e) {
+        document.getElementById('weather-widget').innerHTML = `<i class="fas fa-cloud"></i> Indisponível`;
+    }
+}
+
+// FONTES DO AGREGADOR
 const SOURCES = [
     { name: "O País", api: "https://opais.co.mz/wp-json/wp/v2/posts?_embed", slug: "opais" },
     { name: "Carta de MZ", api: "https://cartamz.com/wp-json/wp/v2/posts?_embed", slug: "carta" },
@@ -211,18 +264,16 @@ const SOURCES = [
 let allPosts = [], currentPage = 1, isFetching = false, currentCat = '', isSavedView = false, sortOrder = 'new';
 let currentReadingPost = null;
 
-// LÓGICA DO MENU E TEMA
+// INTERFACE
 function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
-    sidebar.classList.toggle('open');
-    overlay.classList.toggle('open');
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebarOverlay').classList.toggle('open');
 }
 
 function toggleTheme() {
-    document.body.classList.toggle('dark-mode');
-    const icon = document.getElementById('theme-icon');
-    icon.className = document.body.classList.contains('dark-mode') ? 'fas fa-sun' : 'fas fa-moon';
+    const isDark = document.body.classList.toggle('dark-mode');
+    document.getElementById('theme-icon').className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+    document.getElementById('theme-text').innerText = isDark ? 'Modo Claro' : 'Modo Escuro';
 }
 
 function setSort(order) {
@@ -233,7 +284,7 @@ function setSort(order) {
     renderFeed();
 }
 
-// LÓGICA DO FEED
+// LÓGICA DO FEED E O "SUPER ID"
 async function loadNews() {
     if (isFetching || isSavedView) return;
     isFetching = true;
@@ -245,24 +296,36 @@ async function loadNews() {
             let url = `${src.api}&per_page=3&page=${currentPage}`;
             if (query) url += `&search=${encodeURIComponent(query)}`;
             const res = await fetch(url);
-            if (!res.ok) throw new Error('Falha');
+            if (!res.ok) throw new Error('CORS block ou Erro de Servidor');
             const data = await res.json();
             
-            return data.map(p => ({
-                id: String(p.id), // Forçar string para facilitar comparações
-                title: p.title.rendered, 
-                date: p.date, 
-                srcName: src.name, 
-                srcSlug: src.slug,
-                apiBase: src.api.split('?')[0],
-                img: p._embedded?.['wp:featuredmedia']?.[0]?.source_url || 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?q=80&w=600'
-            }));
-        } catch (e) { return []; }
+            return data.map(p => {
+                // Aqui criamos o Super ID para evitar Notícias Repetidas e Erros no Guardar
+                const uniqueId = `${src.slug}-${p.id}`; 
+                return {
+                    uniqueId: uniqueId, 
+                    apiId: p.id,
+                    title: p.title.rendered, 
+                    date: p.date, 
+                    srcName: src.name, 
+                    srcSlug: src.slug,
+                    apiBase: src.api.split('?')[0],
+                    img: p._embedded?.['wp:featuredmedia']?.[0]?.source_url || 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?q=80&w=600'
+                };
+            });
+        } catch (e) { return []; } // Ignora os sites que bloqueiam
     });
 
     const results = await Promise.all(fetchPromises);
     const newPosts = results.flat();
-    allPosts = [...allPosts, ...newPosts];
+    
+    // Filtro para garantir que não entram duplicados se a API falhar
+    newPosts.forEach(newP => {
+        if(!allPosts.some(oldP => oldP.uniqueId === newP.uniqueId)) {
+            allPosts.push(newP);
+        }
+    });
+
     renderFeed();
     isFetching = false;
     currentPage++;
@@ -270,16 +333,13 @@ async function loadNews() {
 
 function renderFeed() {
     const feed = document.getElementById('feed');
-    feed.innerHTML = ''; // Limpar para reordenar corretamente
+    feed.innerHTML = ''; 
     
-    let displayList = isSavedView ? JSON.parse(localStorage.getItem('news_saved') || '[]') : [...allPosts];
+    let displayList = isSavedView ? JSON.parse(localStorage.getItem('premium_news_saved') || '[]') : [...allPosts];
     
-    // Aplica a ordenação
-    if(sortOrder === 'new') {
-        displayList.sort((a, b) => new Date(b.date) - new Date(a.date));
-    } else {
-        displayList.sort((a, b) => new Date(a.date) - new Date(b.date));
-    }
+    // Ordenar
+    if(sortOrder === 'new') { displayList.sort((a, b) => new Date(b.date) - new Date(a.date)); } 
+    else { displayList.sort((a, b) => new Date(a.date) - new Date(b.date)); }
     
     displayList.forEach(p => {
         const card = document.createElement('div');
@@ -290,7 +350,7 @@ function renderFeed() {
             <div class="news-body">
                 <span class="news-tag">${p.srcName}</span>
                 <h3 class="news-title">${p.title}</h3>
-                <div class="news-meta"><span><i class="far fa-clock"></i> ${new Date(p.date).toLocaleDateString()}</span></div>
+                <div class="news-meta"><i class="far fa-clock"></i> ${new Date(p.date).toLocaleDateString('pt-MZ')}</div>
             </div>`;
         feed.appendChild(card);
     });
@@ -306,8 +366,7 @@ function filterCat(cat, btn) {
 
 function toggleSavedView() {
     isSavedView = !isSavedView;
-    const btn = document.getElementById('sidebar-saved-btn');
-    btn.classList.toggle('active', isSavedView);
+    document.getElementById('sidebar-saved-btn').classList.toggle('active', isSavedView);
     document.getElementById('scroll-anchor').style.display = isSavedView ? 'none' : 'block';
     toggleSidebar();
     if(isSavedView && currentReadingPost) closeArticle();
@@ -316,7 +375,7 @@ function toggleSavedView() {
 
 function resetAndLoad() { allPosts = []; currentPage = 1; loadNews(); }
 
-// LÓGICA DO ARTIGO E RELACIONADOS
+// LÓGICA DO ARTIGO
 async function openArticle(post) {
     currentReadingPost = post;
     
@@ -326,23 +385,23 @@ async function openArticle(post) {
 
     document.getElementById('source-tag').innerText = post.srcName;
     document.getElementById('article-title').innerHTML = post.title;
-    document.getElementById('article-content').innerHTML = '<i class="fas fa-spinner fa-spin"></i> A carregar texto completo...';
+    document.getElementById('article-content').innerHTML = '<i class="fas fa-spinner fa-spin"></i> A descarregar o texto original...';
     
     const img = document.getElementById('feat-img');
     if (post.img && !post.img.includes('unsplash')) {
-        img.src = post.img;
-        img.style.display = 'block';
+        img.src = post.img; img.style.display = 'block';
     } else { img.style.display = 'none'; }
 
     updateActionBtns();
     renderRelatedPosts(post);
 
+    // Puxar o texto completo da API usando o apiId original
     try {
-        const res = await fetch(`${post.apiBase}/${post.id}?_embed`);
+        const res = await fetch(`${post.apiBase}/${post.apiId}?_embed`);
         const p = await res.json();
         document.getElementById('article-content').innerHTML = p.content.rendered;
     } catch(e) { 
-        document.getElementById('article-content').innerHTML = "Texto não disponível. Tente outra notícia."; 
+        document.getElementById('article-content').innerHTML = "Lamentamos, os bloqueios de segurança do jornal não permitem ler a notícia completa por aqui."; 
     }
 }
 
@@ -354,38 +413,36 @@ function closeArticle() {
     if(isSavedView) renderFeed(); 
 }
 
-// LÓGICA DE BOTÕES: GUARDAR, ADORAR E PARTILHAR
+// BOTÕES DE AÇÃO COM SUPER ID
 function toggleSaveArticle() {
     if(!currentReadingPost) return;
-    let saved = JSON.parse(localStorage.getItem('news_saved') || '[]');
-    const idx = saved.findIndex(x => x.id === currentReadingPost.id);
+    let saved = JSON.parse(localStorage.getItem('premium_news_saved') || '[]');
+    const idx = saved.findIndex(x => x.uniqueId === currentReadingPost.uniqueId);
     idx > -1 ? saved.splice(idx, 1) : saved.push(currentReadingPost);
-    localStorage.setItem('news_saved', JSON.stringify(saved));
+    localStorage.setItem('premium_news_saved', JSON.stringify(saved));
     updateActionBtns();
 }
 
 function toggleLike() {
     if(!currentReadingPost) return;
-    let liked = JSON.parse(localStorage.getItem('news_liked') || '[]');
-    const idx = liked.findIndex(id => id === currentReadingPost.id);
-    idx > -1 ? liked.splice(idx, 1) : liked.push(currentReadingPost.id);
-    localStorage.setItem('news_liked', JSON.stringify(liked));
+    let liked = JSON.parse(localStorage.getItem('premium_news_liked') || '[]');
+    const idx = liked.findIndex(id => id === currentReadingPost.uniqueId);
+    idx > -1 ? liked.splice(idx, 1) : liked.push(currentReadingPost.uniqueId);
+    localStorage.setItem('premium_news_liked', JSON.stringify(liked));
     updateActionBtns();
 }
 
 function updateActionBtns() {
     if(!currentReadingPost) return;
     
-    // Botão Guardar
-    const saved = JSON.parse(localStorage.getItem('news_saved') || '[]');
-    const isSaved = saved.some(x => x.id === currentReadingPost.id);
+    const saved = JSON.parse(localStorage.getItem('premium_news_saved') || '[]');
+    const isSaved = saved.some(x => x.uniqueId === currentReadingPost.uniqueId);
     const btnSave = document.getElementById('btn-save');
     btnSave.classList.toggle('saved', isSaved);
-    btnSave.innerHTML = isSaved ? '<i class="fas fa-bookmark"></i> Guardada' : '<i class="far fa-bookmark"></i> Guardar';
+    btnSave.innerHTML = isSaved ? '<i class="fas fa-bookmark"></i> Guardada' : '<i class="far fa-bookmark"></i> Guardar para ler depois';
 
-    // Botão Adorar
-    const liked = JSON.parse(localStorage.getItem('news_liked') || '[]');
-    const isLiked = liked.includes(currentReadingPost.id);
+    const liked = JSON.parse(localStorage.getItem('premium_news_liked') || '[]');
+    const isLiked = liked.includes(currentReadingPost.uniqueId);
     const btnLike = document.getElementById('btn-like');
     btnLike.classList.toggle('liked', isLiked);
     btnLike.innerHTML = isLiked ? '<i class="fas fa-heart"></i> Adorado' : '<i class="far fa-heart"></i> Adorar';
@@ -393,40 +450,38 @@ function updateActionBtns() {
 
 function shareArticle() { 
     if (navigator.share && currentReadingPost) {
-        navigator.share({ title: currentReadingPost.title, url: location.href }); 
-    } else { alert("Link pronto a partilhar!"); }
+        navigator.share({ title: currentReadingPost.title, url: window.location.href }); 
+    } else { alert("Partilha ativada!"); }
 }
 
-// NOTÍCIAS RELACIONADAS
 function renderRelatedPosts(currentPost) {
     const section = document.getElementById('related-section');
     const grid = document.getElementById('related-grid');
-    
-    // Filtra notícias da mesma fonte (jornal), excluindo a que estamos a ler
-    let related = allPosts.filter(p => p.srcSlug === currentPost.srcSlug && p.id !== currentPost.id).slice(0, 4);
+    let related = allPosts.filter(p => p.srcSlug === currentPost.srcSlug && p.uniqueId !== currentPost.uniqueId).slice(0, 3);
     
     if(related.length > 0) {
         grid.innerHTML = related.map(p => `
-            <div class="related-card" onclick="openRelated('${p.id}')">
+            <div class="related-card" onclick="openRelated('${p.uniqueId}')">
                 <img src="${p.img}" loading="lazy">
                 <h4>${p.title}</h4>
             </div>
         `).join('');
         section.style.display = 'block';
-    } else {
-        section.style.display = 'none';
-    }
+    } else { section.style.display = 'none'; }
 }
 
-// Função auxiliar para abrir artigo a partir dos relacionados
-function openRelated(id) {
-    const post = allPosts.find(p => p.id === id);
+function openRelated(uniqueId) {
+    const post = allPosts.find(p => p.uniqueId === uniqueId);
     if(post) { window.scrollTo(0,0); openArticle(post); }
 }
 
+// INIT
 const observer = new IntersectionObserver(e => e[0].isIntersecting && loadNews());
-observer.observe(document.getElementById('scroll-anchor'));
-window.onload = loadNews;
+window.onload = () => {
+    loadWeather();
+    observer.observe(document.getElementById('scroll-anchor'));
+    loadNews();
+};
 </script>
 </body>
 </html>
